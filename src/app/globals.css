@@ -2,20 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
+/* —————————————— SITE STYLES —————————————— */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+	--background: #ffffff;
+	--foreground: #171717;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+	:root {
+		--background: #0a0a0a;
+		--foreground: #ededed;
+	}
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+	color: var(--foreground);
+	background: var(--background);
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+/* —————————————— TAILWIND STYLES —————————————— */
+
+@layer components {
+	.debug {
+		@apply border border-rose-500;
+	}
+
+	.horizontal {
+		@apply flex flex-row;
+	}
+
+	.vertical {
+		@apply flex flex-col;
+	}
+
+	.horizontal.center-v {
+		@apply items-center;
+	}
+
+	.horizontal.center-h {
+		@apply justify-center;
+	}
+
+	.horizontal.center {
+		@apply justify-center items-center;
+	}
+
+	.vertical.center-v {
+		@apply justify-center;
+	}
+
+	.vertical.center-h {
+		@apply items-center;
+	}
+
+	.vertical.center {
+		@apply justify-center items-center;
+	}
+
+	.space-between {
+		@apply justify-between;
+	}
 }
