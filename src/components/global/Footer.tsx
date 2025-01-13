@@ -9,7 +9,7 @@ const Footer = () => {
 					<Link href="/">Home</Link>
 					<Link href="/about">About</Link>
 					<Link href="/contact">Contact</Link>
-					<Link href="/login" className="bg-white rounded-full px-3 py-1.5 text-zinc-800">
+					<Link href="/login" className="bg-theme-orange rounded-full px-4 py-2 text-zinc-800">
 						Get Started
 					</Link>
 				</div>

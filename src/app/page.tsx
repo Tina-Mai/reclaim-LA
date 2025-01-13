@@ -26,7 +26,7 @@ export default function Home() {
 			</div>
 
 			<div className="vertical justify-center items-center p-10 pt-20">
-				<div id="learn-more-target" className="text-center text-3xl w-full max-w-screen-sm font-medium">
+				<div id="learn-more-target" className="font-serif text-center text-4xl w-full max-w-screen-sm font-medium">
 					Weeks of gathering receipts and creating a loss inventory reduced to minutes
 				</div>
 			</div>

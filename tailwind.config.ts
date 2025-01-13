@@ -11,6 +11,7 @@ export default {
 				theme: {
 					green: "#DDE9D3",
 					blue: "#E5EAF2",
+					orange: "#FCA06D",
 				},
 			},
 			fontFamily: {
