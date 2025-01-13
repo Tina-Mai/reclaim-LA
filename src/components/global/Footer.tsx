@@ -5,15 +5,14 @@ const Footer = () => {
 	return (
 		<div className="vertical mx-5 mt-12 border-t border-zinc-400">
 			<div className="vertical gap-2 pb-8 pt-6">
-				<div className="horizontal justify-between items-center px-3">
-					<Link href="/" className="horizontal items-center gap-3">
+				<div className="flex flex-col md:flex-row justify-between items-center px-3 gap-6 md:gap-0">
+					<Link href="/" className="flex flex-col md:flex-row items-center gap-3 text-center md:text-left">
 						<Logo />
 						<div className="font-serif text-2xl font-medium">ReclaimLA.org</div>
-
-						<div className="flex place-self-center text-sm text-zinc-500 ml-3">© 2024 ReclaimLA.org</div>
+						<div className="text-sm text-zinc-500">© 2024 ReclaimLA.org</div>
 					</Link>
 
-					<div className="horizontal gap-5 font-medium items-center">
+					<div className="flex flex-col md:flex-row gap-5 font-medium items-center">
 						<Link href="/about">About</Link>
 						<Link href="/contact">Contact</Link>
 						<Link href="/privacy">Privacy</Link>

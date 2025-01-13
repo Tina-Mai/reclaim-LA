@@ -45,9 +45,9 @@ const Header = () => {
 	return (
 		<motion.div initial={{ y: -100 }} animate={{ y: 0 }} transition={{ type: "spring", stiffness: 260, damping: 20 }} className="fixed top-0 left-0 p-3 sm:p-5 w-full justify-center z-50">
 			<motion.div layout className="horizontal place-self-center justify-between items-center p-3 bg-white/80 backdrop-blur-md rounded-full shadow-md w-full max-w-screen-sm">
-				<Link href="/" className="horizontal items-center gap-2 sm:gap-3 px-2 sm:px-3">
+				<Link href="/" className="horizontal items-center gap-3 px-3">
 					<Logo />
-					<div className="text-xl sm:text-2xl font-serif font-medium">ReclaimLA.org</div>
+					<div className="text-2xl font-serif font-medium">ReclaimLA.org</div>
 				</Link>
 
 				{/* Desktop Navigation */}
