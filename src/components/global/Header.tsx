@@ -3,7 +3,7 @@ import Link from "next/link";
 const Header = () => {
 	return (
 		<div className="fixed top-0 left-0 p-5 w-full justify-center">
-			<div className="horizontal place-self-center justify-between items-center p-3 bg-white rounded-full shadow-md w-full max-w-screen-sm">
+			<div className="horizontal place-self-center justify-between items-center p-3 bg-white/80 backdrop-blur-md rounded-full shadow-md w-full max-w-screen-sm">
 				<Link href="/">
 					<div className="text-2xl font-serif font-medium px-3">ReclaimLA.org</div>
 				</Link>
