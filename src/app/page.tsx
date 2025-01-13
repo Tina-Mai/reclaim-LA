@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Header from "@/components/global/Header";
+import Footer from "@/components/global/Footer";
 
 export default function Home() {
 	return (
@@ -8,8 +9,8 @@ export default function Home() {
 				<Header />
 				<div className="h-[calc(15dvh)]" />
 				<div className="flex flex-col gap-10 max-w-screen-sm min-h-[calc(35dvh)] justify-center items-center">
-					<h1 className="text-center text-6xl font-serif font-medium">Reclaim what you can from the LA fires</h1>
-					<div className="text-center text-lg text-zinc-500">
+					<h1 className="text-center text-7xl font-serif font-medium">Reclaim what you can from the LA fires</h1>
+					<div className="text-center text-lg text-zinc-500 font-medium">
 						Helping LA residents who lost their homes in the recent fires automatically find and catalog lost possessions for insurance claims
 					</div>
 					<div></div>
@@ -18,6 +19,7 @@ export default function Home() {
 					<Image src="/landscape.png" alt="Landscape" width={0} height={0} sizes="100vw" className="w-full h-auto rounded-[2rem]" priority />
 				</div>
 			</div>
+			<Footer />
 		</main>
 	);
 }
