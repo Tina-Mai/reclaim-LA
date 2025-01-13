@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export default {
+	darkMode: ["class"],
 	content: ["./src/pages/**/*.{js,ts,jsx,tsx,mdx}", "./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./src/app/**/*.{js,ts,jsx,tsx,mdx}"],
 	theme: {
 		extend: {
@@ -13,9 +14,14 @@ export default {
 				},
 			},
 			fontFamily: {
-				serif: ["Playfair Display", "serif"],
+				serif: ["Instrument Serif", "serif"],
+			},
+			borderRadius: {
+				lg: "var(--radius)",
+				md: "calc(var(--radius) - 2px)",
+				sm: "calc(var(--radius) - 4px)",
 			},
 		},
 	},
-	plugins: [],
+	plugins: [require("tailwindcss-animate")],
 } satisfies Config;
