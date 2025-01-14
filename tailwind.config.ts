@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import animate from "tailwindcss-animate";
 
 export default {
 	darkMode: ["class"],
@@ -17,12 +18,12 @@ export default {
 			fontFamily: {
 				serif: ["Instrument Serif", "serif"],
 			},
-			borderRadius: {
-				lg: "var(--radius)",
-				md: "calc(var(--radius) - 2px)",
-				sm: "calc(var(--radius) - 4px)",
-			},
+			// borderRadius: {
+			// 	lg: "var(--radius)",
+			// 	md: "calc(var(--radius) - 2px)",
+			// 	sm: "calc(var(--radius) - 4px)",
+			// },
 		},
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [animate],
 } satisfies Config;

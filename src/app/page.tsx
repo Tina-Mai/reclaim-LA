@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Header from "@/components/global/Header";
 import Footer from "@/components/global/Footer";
-import ScrollButton from "@/components/home/ScrollButton";
+import UseCard from "@/components/home/UseCard";
 
 export default function Home() {
 	return (
 		<main>
-			<ScrollButton />
+			{/* <ScrollButton /> */}
 			<div className="vertical min-h-[calc(100dvh)] justify-center items-center p-5">
 				<Header />
 				<div className="flex flex-col gap-10 max-w-screen-sm justify-center items-center pt-28 pb-12">
@@ -20,8 +20,13 @@ export default function Home() {
 						<Image src="/stanford-logo.png" alt="Logo" width={100} height={100} className="grayscale" />
 					</div>
 				</div>
+				<div className="horizontal gap-5 justify-center flex-wrap">
+					<UseCard title="Email" description="Searching email for receipts and making an inventory…" icon="email" />
+					<UseCard title="Photos" description="Identifying belongings and finding matching items online… " icon="photos" />
+					<UseCard title="Amazon" description="Cataloging lost items from order history…" icon="amazon" />
+				</div>
 				<div className="sm:px-5 w-full">
-					<Image src="/landscape.png" alt="Landscape" width={0} height={0} sizes="100vw" className="w-full h-auto rounded-[2rem]" priority />
+					<Image src="/neighborhood.png" alt="Los Angeles Neighborhood" width={0} height={0} sizes="100vw" className="w-full h-auto rounded-[2rem]" priority />
 				</div>
 			</div>
 
