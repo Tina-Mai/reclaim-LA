@@ -42,25 +42,25 @@ export default function SignupPage() {
       setLoading(true);
       setError('');
       
-      const response = await fetch('/api/verify/confirm', {
+      const response = await fetch('/api/verify/check', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
           verificationId,
-          code: verificationCode 
+          code: verificationCode
         }),
       });
 
       const data = await response.json();
       
       if (!response.ok) {
-        throw new Error(data.error);
+        throw new Error(data.error || 'Verification failed');
       }
 
       // Handle successful verification here
-      console.log('Verification successful!');
+      console.log('Verification successful!', data);
       
     } catch (err: any) {
       setError(err?.message || 'Invalid verification code');
