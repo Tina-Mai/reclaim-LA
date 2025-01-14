@@ -6,7 +6,7 @@ const UseCard = ({ title, description, icon }: { title: string; description: str
 			<div className="horizontal items-center gap-2">
 				<div className="relative">
 					<Image src={`/apps/${icon}.png`} alt={title} width={30} height={30} className="border border-zinc-200/50 shadow-sm rounded-md" />
-					<div className="absolute -bottom-1 -right-1 w-2 h-2 bg-green-500 rounded-full animate-[pulse-dot_1.5s_ease-in-out_infinite]" />
+					<div className="absolute -bottom-1 -right-1 size-2.5 bg-green-500 rounded-full animate-[pulse-dot_1.5s_ease-in-out_infinite]" />
 				</div>
 				<div className="text-lg text-uppercase font-medium">{title}</div>
 			</div>
