@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
-		"build": "npm install --legacy-peer-deps && next build",
+		"build": "next build",
 		"start": "next start",
 		"lint": "next lint"
 	},
@@ -20,8 +20,8 @@
 		"framer-motion": "^11.17.0",
 		"lucide-react": "^0.471.1",
 		"next": "15.1.4",
-		"react": "^19.0.0",
-		"react-dom": "^19.0.0",
+		"react": "18.2.0",
+		"react-dom": "18.2.0",
 		"react-phone-number-input": "^3.4.11",
 		"tailwind-merge": "^2.6.0",
 		"tailwindcss-animate": "^1.0.7"
