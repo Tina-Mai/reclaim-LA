@@ -2,7 +2,6 @@ import Image from "next/image";
 import Header from "@/components/global/Header";
 import Footer from "@/components/global/Footer";
 import PhoneInput from "@/components/home/PhoneInput";
-import UseCard from "@/components/home/UseCard";
 
 export default function Home() {
 	return (
@@ -10,10 +9,10 @@ export default function Home() {
 			{/* <ScrollButton /> */}
 			<div className="vertical min-h-[calc(100dvh)] justify-center items-center">
 				<Header />
-				<div className="flex flex-col gap-10 max-w-screen-sm justify-center items-center pt-36 pb-12 px-5">
-					<h1 className="text-center text-6xl sm:text-7xl font-serif font-medium">Reclaim what you can from the LA fires</h1>
+				<div className="flex flex-col gap-10 max-w-screen-md justify-center items-center pt-36 pb-12 px-5">
+					<h1 className="text-center text-6xl sm:text-7xl font-serif font-medium">Helping you document lost items after the LA fires</h1>
 					<div className="text-center text-lg text-zinc-500">
-						A voice companion to help you catalog lost items room by room, streamlining your home inventory for faster, easier insurance claims
+						A voice companion to help you catalog lost belongings room by room, streamlining your home inventory for faster, easier insurance claims
 					</div>
 
 					<div className="vertical justify-center items-center text-center text-sm text-zinc-800 gap-2 opacity-50">
@@ -22,11 +21,6 @@ export default function Home() {
 					</div>
 				</div>
 				<PhoneInput />
-				{/* <div className="horizontal gap-5 justify-center flex-wrap px-5">
-					<UseCard title="Email" description="Searching email for receipts and making an inventory…" icon="email" />
-					<UseCard title="Photos" description="Identifying belongings and finding matching items online… " icon="photos" />
-					<UseCard title="Amazon" description="Cataloging lost items from order history…" icon="amazon" />
-				</div> */}
 				<div className="w-full relative -z-10 -mt-[40rem] md:-mt-96 h-[90vh] md:h-[80vh]">
 					<div className="absolute w-full h-32 top-0 bg-gradient-to-b from-background to-transparent z-10"></div>
 					<Image src="/neighborhood.png" alt="Los Angeles Neighborhood" width={0} height={0} sizes="100vw" className="w-full h-full object-cover rounded-[2rem]" priority />
