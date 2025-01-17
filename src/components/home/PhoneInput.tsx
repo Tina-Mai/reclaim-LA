@@ -4,7 +4,8 @@ import { useState } from "react";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Check } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 const PhoneInputComponent = () => {
 	const [phoneNumber, setPhoneNumber] = useState("");
@@ -62,18 +63,39 @@ const PhoneInputComponent = () => {
 	return (
 		<div className="horizontal items-center gap-2">
 			<PhoneInput defaultCountry="US" placeholder="Phone number" value={phoneNumber} onChange={setPhoneNumber} disabled={isLoading || isSuccess} />
-			<Button className="hidden sm:flex min-w-32" onClick={handleSubmit} disabled={isLoading || isSuccess} variant={isSuccess ? "secondary" : "default"}>
-				{isSuccess ? (
-					<>
-						<Check className="mr-2 h-4 w-4" />
-						Call Sent
-					</>
-				) : isLoading ? (
-					"Starting..."
-				) : (
-					"Send me a call"
-				)}
-			</Button>
+			<motion.div whileHover="hover" initial="initial">
+				<Button className="hidden sm:flex" onClick={handleSubmit} disabled={isLoading || isSuccess} variant={isSuccess ? "secondary" : "default"}>
+					{isSuccess ? (
+						<>
+							<Check className="mr-2 h-4 w-4" />
+							Call Sent
+						</>
+					) : isLoading ? (
+						"Starting..."
+					) : (
+						<motion.div
+							className="horizontal items-center"
+							variants={{
+								initial: { gap: "0px" },
+								hover: { gap: "8px" },
+							}}
+							transition={{ duration: 0.2 }}
+						>
+							Send me a call
+							<motion.div
+								variants={{
+									initial: { width: 0, opacity: 0 },
+									hover: { width: "16px", opacity: 1 },
+								}}
+								transition={{ duration: 0.2 }}
+								style={{ overflow: "hidden" }}
+							>
+								<ArrowRight className="size-4" />
+							</motion.div>
+						</motion.div>
+					)}
+				</Button>
+			</motion.div>
 			<Button className="flex sm:hidden min-w-24" onClick={handleSubmit} disabled={isLoading || isSuccess} variant={isSuccess ? "secondary" : "default"}>
 				{isSuccess ? (
 					<>
