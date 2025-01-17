@@ -9,7 +9,6 @@ import PhoneDialog from "@/components/home/PhoneDialog";
 export default function Home() {
 	return (
 		<main>
-			{/* <ScrollButton /> */}
 			<div className="vertical min-h-[calc(100dvh)] justify-center items-center">
 				<Header />
 				<div className="flex flex-col gap-8 sm:gap-10 max-w-screen-md justify-center items-center pt-28 md:pt-36 pb-12 px-5">

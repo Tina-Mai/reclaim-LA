@@ -1,14 +1,91 @@
 "use client";
 
+import { useState } from "react";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { Check } from "lucide-react";
 
 const PhoneInputComponent = () => {
+	const [phoneNumber, setPhoneNumber] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
+	const [isSuccess, setIsSuccess] = useState(false);
+	const { toast } = useToast();
+
+	const handleSubmit = async () => {
+		if (!phoneNumber) {
+			toast({
+				title: "Phone number required",
+				description: "Please enter your phone number to start a call.",
+				variant: "destructive",
+			});
+			return;
+		}
+
+		setIsLoading(true);
+		try {
+			const response = await fetch("/api/startCall", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ phone_number: phoneNumber }),
+			});
+
+			if (!response.ok) {
+				throw new Error("Failed to start call");
+			}
+
+			setIsSuccess(true);
+			toast({
+				title: "Call initiated",
+				description: "You will receive a call shortly.",
+			});
+
+			// Reset success state after 3 seconds
+			setTimeout(() => {
+				setIsSuccess(false);
+				setPhoneNumber(""); // Clear the input for next use
+			}, 3000);
+		} catch (error) {
+			console.error("Error starting call:", error);
+			toast({
+				title: "Error",
+				description: "Failed to start the call. Please try again.",
+				variant: "destructive",
+			});
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
 	return (
 		<div className="horizontal items-center gap-2">
-			<PhoneInput defaultCountry="US" placeholder="Phone number" />
-			<Button className="hidden sm:flex">Send me a call</Button>
-			<Button className="flex sm:hidden">Start a call</Button>
+			<PhoneInput defaultCountry="US" placeholder="Phone number" value={phoneNumber} onChange={setPhoneNumber} disabled={isLoading || isSuccess} />
+			<Button className="hidden sm:flex min-w-32" onClick={handleSubmit} disabled={isLoading || isSuccess} variant={isSuccess ? "secondary" : "default"}>
+				{isSuccess ? (
+					<>
+						<Check className="mr-2 h-4 w-4" />
+						Call Sent
+					</>
+				) : isLoading ? (
+					"Starting..."
+				) : (
+					"Send me a call"
+				)}
+			</Button>
+			<Button className="flex sm:hidden min-w-24" onClick={handleSubmit} disabled={isLoading || isSuccess} variant={isSuccess ? "secondary" : "default"}>
+				{isSuccess ? (
+					<>
+						<Check className="mr-2 h-4 w-4" />
+						Sent
+					</>
+				) : isLoading ? (
+					"Starting..."
+				) : (
+					"Start a call"
+				)}
+			</Button>
 		</div>
 	);
 };
