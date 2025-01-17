@@ -67,7 +67,7 @@ const Header = () => {
 				</Link>
 
 				{/* Desktop Navigation */}
-				<div className="hidden sm:flex horizontal gap-5 text-zinc-500 font-medium items-center">
+				<div className="hidden sm:flex horizontal gap-5 text-zinc-500 font-medium items-center text-sm">
 					<AboutDialog />
 					<Link href="mailto:team@reclaim.org?subject=ReclaimLA.org" className="hover:opacity-70 transition-opacity duration-300">
 						Contact

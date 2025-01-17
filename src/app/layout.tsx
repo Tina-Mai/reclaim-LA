@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Work_Sans } from "next/font/google";
+import { Manrope } from "next/font/google";
 import "./globals.css";
 
-const workSans = Work_Sans({ subsets: ["latin"] });
+const manrope = Manrope({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
 	title: "Reclaim",
@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${workSans.className} antialiased`}>{children}</body>
+			<body className={`${manrope.className} antialiased`}>{children}</body>
 		</html>
 	);
 }

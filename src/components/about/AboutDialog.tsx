@@ -5,7 +5,7 @@ import Link from "next/link";
 const About = () => {
 	return (
 		<Dialog>
-			<DialogTrigger>About</DialogTrigger>
+			<DialogTrigger className="hover:opacity-70 transition-opacity duration-300">About</DialogTrigger>
 			<DialogContent>
 				<DialogHeader className="vertical gap-3 pb-3">
 					<DialogTitle>About Us</DialogTitle>

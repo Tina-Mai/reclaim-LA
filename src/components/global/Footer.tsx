@@ -13,11 +13,17 @@ const Footer = () => {
 						<div className="text-sm text-zinc-500">© 2024 ReclaimLA.org</div>
 					</Link>
 
-					<div className="flex flex-col md:flex-row gap-5 items-center">
+					<div className="flex flex-col md:flex-row gap-5 items-center text-sm">
 						<AboutDialog />
-						<Link href="mailto:team@reclaim.org?subject=ReclaimLA.org">Contact</Link>
-						<Link href="/privacy">Privacy</Link>
-						<Link href="/terms">Terms of Service</Link>
+						<Link href="mailto:team@reclaim.org?subject=ReclaimLA.org" className="hover:opacity-70 transition-opacity duration-300">
+							Contact
+						</Link>
+						<Link href="/privacy" className="hover:opacity-70 transition-opacity duration-300">
+							Privacy
+						</Link>
+						<Link href="/terms" className="hover:opacity-70 transition-opacity duration-300">
+							Terms of Service
+						</Link>
 					</div>
 				</div>
 			</div>
