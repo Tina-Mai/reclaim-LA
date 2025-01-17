@@ -19,7 +19,7 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> = React.forwa
 	return (
 		<RPNInput.default
 			ref={ref}
-			className={cn("flex", className)}
+			className={cn("flex bg-white/80 backdrop-blur-md rounded-lg", className)}
 			flagComponent={FlagComponent}
 			countrySelectComponent={CountrySelect}
 			inputComponent={InputComponent}
@@ -41,7 +41,7 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> = React.forwa
 PhoneInput.displayName = "PhoneInput";
 
 const InputComponent = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(({ className, ...props }, ref) => (
-	<Input className={cn("rounded-e-lg rounded-s-none", className)} {...props} ref={ref} />
+	<Input className={cn("rounded-e-lg rounded-s-none !ring-0 !ring-offset-0", className)} {...props} ref={ref} />
 ));
 InputComponent.displayName = "InputComponent";
 
@@ -58,7 +58,7 @@ const CountrySelect = ({ disabled, value: selectedCountry, options: countryList,
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
-				<Button type="button" variant="outline" className="flex gap-1 rounded-e-none rounded-s-lg border-r-0 px-3 focus:z-10" disabled={disabled}>
+				<Button type="button" variant="outline" className="flex gap-1 rounded-e-none rounded-s-lg border-r-0 px-3 focus:z-10 !ring-0 !ring-offset-0" disabled={disabled}>
 					<FlagComponent country={selectedCountry} countryName={selectedCountry} />
 					<ChevronsUpDown className={cn("-mr-2 size-4 opacity-50", disabled ? "hidden" : "opacity-100")} />
 				</Button>
