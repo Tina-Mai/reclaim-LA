@@ -2,6 +2,7 @@ import Image from "next/image";
 import Header from "@/components/global/Header";
 import Footer from "@/components/global/Footer";
 import PhoneInput from "@/components/home/PhoneInput";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
 	return (
@@ -32,7 +33,9 @@ export default function Home() {
 				<div id="learn-more-target" className="font-serif text-center text-4xl w-full max-w-screen-sm font-medium">
 					Weeks of gathering receipts and creating a loss inventory reduced to minutes
 				</div>
-				<button className="bg-zinc-800 text-white text-lg px-5 py-3 rounded-full">Get Started</button>
+				<Button size="lg" className="text-lg">
+					Get Started
+				</Button>
 			</div>
 			<Footer />
 		</main>
