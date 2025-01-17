@@ -22,12 +22,23 @@ Deno.serve(async (req) => {
   
   // Extract transcript and email variable
   const data = {
-    transcript: callData.concatenated_transcript,
-    email: callData.variables?.email, // Using optional chaining in case variables is undefined
+    prompt: callData.concatenated_transcript,
+    email: callData.variables?.email,
   }
 
+  // Call extract_items endpoint
+  const extractResponse = await fetch('https://wlbgwlnszsnuhfmjgsxj.supabase.co/functions/v1/extract_items', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+
+  const extractedData = await extractResponse.json()
+
   return new Response(
-    JSON.stringify(data),
+    JSON.stringify(extractedData),
     { headers: { "Content-Type": "application/json" } },
   )
 })
