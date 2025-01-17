@@ -6,7 +6,7 @@ const workSans = Work_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
 	title: "Reclaim",
-	description: "Helping LA residents who lost their homes automatically find and catalog lost possessions for insurance claims",
+	description: "Helping LA residents who lost their homes build a catalog of lost possessions for their insurance claims",
 };
 
 export default function RootLayout({

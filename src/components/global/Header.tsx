@@ -56,13 +56,10 @@ const Header = () => {
 					<Link href="/about" className="hover:opacity-70 transition-opacity duration-300">
 						About
 					</Link>
-					<Link href="/contact" className="hover:opacity-70 transition-opacity duration-300">
+					<Link href="mailto:zane@reclaim.org?subject=ReclaimLA.org" className="hover:opacity-70 transition-opacity duration-300">
 						Contact
 					</Link>
 					<Button>Get Started</Button>
-					{/* <Link href="/login" className="bg-zinc-800 rounded-full px-4 py-2 text-white">
-							Get Started
-						</Link> */}
 				</div>
 
 				{/* Mobile Menu Button */}
