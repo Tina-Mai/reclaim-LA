@@ -4,7 +4,7 @@ import Link from "next/link";
 import Logo from "@/components/global/Logo";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import PhoneDialog from "@/components/home/PhoneDialog";
 
 interface MobileMenuItemProps {
 	href: string;
@@ -56,10 +56,10 @@ const Header = () => {
 					<Link href="/about" className="hover:opacity-70 transition-opacity duration-300">
 						About
 					</Link>
-					<Link href="mailto:zane@reclaim.org?subject=ReclaimLA.org" className="hover:opacity-70 transition-opacity duration-300">
+					<Link href="mailto:team@reclaim.org?subject=ReclaimLA.org" className="hover:opacity-70 transition-opacity duration-300">
 						Contact
 					</Link>
-					<Button>Get Started</Button>
+					<PhoneDialog />
 				</div>
 
 				{/* Mobile Menu Button */}
@@ -95,11 +95,11 @@ const Header = () => {
 							<MobileMenuItem href="/about" index={0}>
 								About
 							</MobileMenuItem>
-							<MobileMenuItem href="/contact" index={1}>
+							<MobileMenuItem href="mailto:team@reclaim.org?subject=ReclaimLA.org" index={1}>
 								Contact
 							</MobileMenuItem>
 							<MobileMenuItem href="/login" index={2}>
-								<Button className="w-full">Get Started</Button>
+								<PhoneDialog />
 							</MobileMenuItem>
 						</nav>
 					</motion.div>

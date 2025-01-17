@@ -14,7 +14,7 @@ const Footer = () => {
 
 					<div className="flex flex-col md:flex-row gap-5 font-medium items-center">
 						<Link href="/about">About</Link>
-						<Link href="mailto:zane@reclaim.org?subject=ReclaimLA.org">Contact</Link>
+						<Link href="mailto:team@reclaim.org?subject=ReclaimLA.org">Contact</Link>
 						<Link href="/privacy">Privacy</Link>
 					</div>
 				</div>

@@ -1,8 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import Header from "@/components/global/Header";
 import Footer from "@/components/global/Footer";
 import PhoneInput from "@/components/home/PhoneInput";
-import { Button } from "@/components/ui/button";
+import PhoneDialog from "@/components/home/PhoneDialog";
 
 export default function Home() {
 	return (
@@ -31,11 +33,10 @@ export default function Home() {
 
 			<div className="vertical justify-center items-center pt-12 p-5 gap-8">
 				<div id="learn-more-target" className="font-serif text-center text-4xl w-full max-w-screen-sm font-medium">
-					Weeks of gathering receipts and creating a loss inventory reduced to minutes
+					Weeks of remembering and creating a loss inventory reduced to minutes
 				</div>
-				<Button size="lg" className="text-lg">
-					Get Started
-				</Button>
+
+				<PhoneDialog size="lg" />
 			</div>
 			<Footer />
 		</main>
