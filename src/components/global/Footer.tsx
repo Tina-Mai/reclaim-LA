@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Logo from "@/components/global/Logo";
+import AboutDialog from "@/components/about/AboutDialog";
 
 const Footer = () => {
 	return (
@@ -13,7 +14,7 @@ const Footer = () => {
 					</Link>
 
 					<div className="flex flex-col md:flex-row gap-5 items-center">
-						<Link href="/about">About</Link>
+						<AboutDialog />
 						<Link href="mailto:team@reclaim.org?subject=ReclaimLA.org">Contact</Link>
 						<Link href="/privacy">Privacy</Link>
 						<Link href="/terms">Terms of Service</Link>

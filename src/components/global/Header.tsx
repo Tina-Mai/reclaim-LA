@@ -5,6 +5,7 @@ import Logo from "@/components/global/Logo";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import PhoneDialog from "@/components/home/PhoneDialog";
+import AboutDialog from "@/components/about/AboutDialog";
 
 interface MobileMenuItemProps {
 	href: string;
@@ -67,9 +68,7 @@ const Header = () => {
 
 				{/* Desktop Navigation */}
 				<div className="hidden sm:flex horizontal gap-5 text-zinc-500 font-medium items-center">
-					<Link href="/about" className="hover:opacity-70 transition-opacity duration-300">
-						About
-					</Link>
+					<AboutDialog />
 					<Link href="mailto:team@reclaim.org?subject=ReclaimLA.org" className="hover:opacity-70 transition-opacity duration-300">
 						Contact
 					</Link>
@@ -111,8 +110,8 @@ const Header = () => {
 						className="sm:hidden absolute top-full left-0 right-0 mt-2 mx-3 p-4 bg-white/95 backdrop-blur-md rounded-xl shadow-lg"
 					>
 						<nav className="flex flex-col gap-2 text-zinc-500 font-medium">
-							<MobileMenuItem href="/about" index={0}>
-								About
+							<MobileMenuItem href="#" index={0}>
+								<AboutDialog />
 							</MobileMenuItem>
 							<MobileMenuItem href="mailto:team@reclaim.org?subject=ReclaimLA.org" index={1}>
 								Contact

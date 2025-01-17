@@ -11,7 +11,7 @@ const PhoneDialog = ({ size = "default" }: { size?: "default" | "lg" }) => {
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader className="vertical gap-3 pb-3">
-					<DialogTitle className="font-serif text-4xl font-medium !tracking-normal">Ready to start cataloging your lost items?</DialogTitle>
+					<DialogTitle>Ready to start cataloging your lost items?</DialogTitle>
 					<DialogDescription>
 						Start a call with our voice companion to help you build a memory palace of belongings in your home. At the end, we&apos;ll email you a CSV of the inventory you&apos;ve
 						cataloged for you to send to your insurance company.
