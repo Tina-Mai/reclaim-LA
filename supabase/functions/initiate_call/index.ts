@@ -40,7 +40,8 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         phone_number,
-        pathway_id: "9ac11b35-8525-4ae8-b75a-adecbe8c2bc4"
+        pathway_id: "9ac11b35-8525-4ae8-b75a-adecbe8c2bc4",
+        webhook: "https://wlbgwlnszsnuhfmjgsxj.supabase.co/functions/v1/send_transcript"
       })
     });
     
@@ -48,7 +49,10 @@ serve(async (req) => {
 
     const data = await response.json();
     
-    return new Response(JSON.stringify(data), {
+    return new Response(JSON.stringify({
+      ...data,
+      webhook_endpoint: "send_transcript"
+    }), {
       headers: { "Content-Type": "application/json" },
       status: 200,
     });
