@@ -1,14 +1,15 @@
 "use client";
 
 import { PhoneInput } from "@/components/ui/phone-input";
+import { Button } from "@/components/ui/button";
 
 const PhoneInputComponent = () => {
 	return (
-		// <div className="horizontal p-2 items-center justify-between bg-white border border-zinc-200 rounded-full">
-		// 	<input type="tel" placeholder="Phone number" className="flex w-full mx-3 rounded-md !outline-none" />
-		// 	<button className="bg-zinc-800 rounded-full px-4 py-2 text-white whitespace-nowrap font-medium">Get Started</button>
-		// </div>
-		<PhoneInput defaultCountry="US" placeholder="Phone number" />
+		<div className="horizontal items-center gap-2">
+			<PhoneInput defaultCountry="US" placeholder="Phone number" />
+			<Button className="hidden sm:flex">Send me a call</Button>
+			<Button className="flex sm:hidden">Start a call</Button>
+		</div>
 	);
 };
 

@@ -9,9 +9,9 @@ export default function Home() {
 			{/* <ScrollButton /> */}
 			<div className="vertical min-h-[calc(100dvh)] justify-center items-center">
 				<Header />
-				<div className="flex flex-col gap-10 max-w-screen-md justify-center items-center pt-36 pb-12 px-5">
-					<h1 className="text-center text-6xl sm:text-7xl font-serif font-medium">Helping you document lost items after the LA fires</h1>
-					<div className="text-center text-lg text-zinc-500">
+				<div className="flex flex-col gap-8 sm:gap-10 max-w-screen-md justify-center items-center pt-28 md:pt-36 pb-12 px-5">
+					<h1 className="text-center text-5xl sm:text-7xl font-serif font-medium">Helping you document lost items after the LA fires</h1>
+					<div className="text-center sm:text-lg text-zinc-500">
 						A voice companion to help you catalog lost belongings room by room, streamlining your home inventory for faster, easier insurance claims
 					</div>
 
@@ -22,7 +22,7 @@ export default function Home() {
 						<Image src="/stanford-logo.png" alt="Logo" width={100} height={100} className="grayscale" />
 					</div>
 				</div>
-				<div className="w-full relative -z-10 -mt-[40rem] md:-mt-96 h-[90vh] md:h-[80vh]">
+				<div className="w-full relative -z-10 -mt-[27rem] md:-mt-96 h-[100vh] md:h-[90vh]">
 					<div className="absolute w-full h-32 top-0 bg-gradient-to-b from-background to-transparent z-10"></div>
 					<Image src="/neighborhood.png" alt="Los Angeles Neighborhood" width={0} height={0} sizes="100vw" className="w-full h-full object-cover rounded-[2rem]" priority />
 				</div>

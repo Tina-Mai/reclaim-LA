@@ -4,6 +4,7 @@ import Link from "next/link";
 import Logo from "@/components/global/Logo";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
 interface MobileMenuItemProps {
 	href: string;
@@ -12,7 +13,7 @@ interface MobileMenuItemProps {
 	className?: string;
 }
 
-const MobileMenuItem = ({ href, index, children, className = "block p-1 hover:bg-zinc-100 rounded-xl text-center" }: MobileMenuItemProps) => {
+const MobileMenuItem = ({ href, index, children, className = "block p-1 hover:bg-zinc-100 rounded-lg text-center" }: MobileMenuItemProps) => {
 	return (
 		<motion.div
 			variants={{
@@ -44,25 +45,24 @@ const Header = () => {
 
 	return (
 		<motion.div initial={{ y: -100 }} animate={{ y: 0 }} transition={{ type: "spring", stiffness: 260, damping: 20 }} className="fixed top-0 left-0 p-3 sm:p-5 w-full justify-center z-50">
-			<motion.div layout className="horizontal place-self-center justify-between items-center p-3 bg-white/80 backdrop-blur-md rounded-full shadow-md w-full max-w-screen-sm">
-				<Link href="/" className="horizontal items-center gap-3 px-3">
+			<motion.div layout className="horizontal place-self-center justify-between items-center p-2 bg-white/80 backdrop-blur-md rounded-xl shadow-md w-full max-w-screen-sm">
+				<Link href="/" className="horizontal items-center gap-3 px-3 hover:opacity-70 transition-opacity duration-300">
 					<Logo />
 					<div className="text-2xl font-serif font-medium">ReclaimLA.org</div>
 				</Link>
 
 				{/* Desktop Navigation */}
 				<div className="hidden sm:flex horizontal gap-5 text-zinc-500 font-medium items-center">
-					<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-						<Link href="/about">About</Link>
-					</motion.div>
-					<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-						<Link href="/contact">Contact</Link>
-					</motion.div>
-					<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-						<Link href="/login" className="bg-zinc-800 rounded-full px-4 py-2 text-white">
+					<Link href="/about" className="hover:opacity-70 transition-opacity duration-300">
+						About
+					</Link>
+					<Link href="/contact" className="hover:opacity-70 transition-opacity duration-300">
+						Contact
+					</Link>
+					<Button>Get Started</Button>
+					{/* <Link href="/login" className="bg-zinc-800 rounded-full px-4 py-2 text-white">
 							Get Started
-						</Link>
-					</motion.div>
+						</Link> */}
 				</div>
 
 				{/* Mobile Menu Button */}
@@ -92,7 +92,7 @@ const Header = () => {
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: -20 }}
 						transition={{ type: "spring", stiffness: 300, damping: 25 }}
-						className="sm:hidden absolute top-full left-0 right-0 mt-2 mx-3 p-4 bg-white/95 backdrop-blur-md rounded-2xl shadow-lg"
+						className="sm:hidden absolute top-full left-0 right-0 mt-2 mx-3 p-4 bg-white/95 backdrop-blur-md rounded-xl shadow-lg"
 					>
 						<nav className="flex flex-col gap-2 text-zinc-500 font-medium">
 							<MobileMenuItem href="/about" index={0}>
@@ -101,8 +101,8 @@ const Header = () => {
 							<MobileMenuItem href="/contact" index={1}>
 								Contact
 							</MobileMenuItem>
-							<MobileMenuItem href="/login" index={2} className="block bg-zinc-800 rounded-full p-2 text-white text-center mt-2">
-								Get Started
+							<MobileMenuItem href="/login" index={2}>
+								<Button className="w-full">Get Started</Button>
 							</MobileMenuItem>
 						</nav>
 					</motion.div>
