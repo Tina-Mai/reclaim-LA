@@ -10,7 +10,7 @@ export default function Terms() {
 					<b>Last updated:</b> January 17, 2025
 				</p>
 				<p>
-					These Terms of Service (&quot;Terms&quot;) govern your use of ReclaimLA.org (the &quot;Site&quot;) and the services (collectively, &quot;Services&quot;) provided by ReclaimLA
+					These Terms of Service (&quot;Terms&quot;) govern your use of ReclaimLA.org (the &quot;Site&quot;) and the services (collectively, &quot;Services&quot;) provided by Reclaim
 					(&quot;we,&quot; &quot;us,&quot; &quot;our&quot;). By accessing or using our Site or Services, you agree to be bound by these Terms. If you do not agree, please discontinue use of
 					our Site and Services immediately.
 				</p>
@@ -26,8 +26,8 @@ export default function Terms() {
 					<h2 className="text-xl font-semibold">2. Use of Services</h2>
 					<ul className="list-decimal list-outside pl-4">
 						<li>
-							Purpose of Services: ReclaimLA provides an automated voice AI service to help you catalog items lost in a fire, generates a transcription, and sends an inventory list (CSV)
-							to your email.
+							Purpose of Services: Reclaimprovides an automated voice AI service to help you catalog items lost in a fire, generates a transcription, and sends an inventory list (CSV) to
+							your email.
 						</li>
 						<li>
 							User Responsibilities:
@@ -35,6 +35,7 @@ export default function Terms() {
 								<li>You agree to provide accurate, complete, and up-to-date information.</li>
 								<li>You are responsible for safeguarding the confidentiality of any account credentials or personal details you provide.</li>
 								<li>You agree not to use the Services for any unlawful or fraudulent purposes.</li>
+								<li>You agree that we may contact you via email or phone number about new features, improvements, or important updates related to Reclaim&apos;s services.</li>
 							</ul>
 						</li>
 					</ul>
@@ -42,7 +43,7 @@ export default function Terms() {
 				<div className="vertical gap-2">
 					<h2 className="text-xl font-semibold">3. Intellectual Property</h2>
 					<ul className="list-decimal list-outside pl-4">
-						<li>Ownership: All content on the Site, including text, graphics, logos, and software, is owned by or licensed to ReclaimLA and is protected by intellectual property laws.</li>
+						<li>Ownership: All content on the Site, including text, graphics, logos, and software, is owned by or licensed to Reclaimand is protected by intellectual property laws.</li>
 						<li>
 							Limited License: We grant you a limited, non-exclusive, non-transferable, and revocable license to use the Site and Services for your personal, non-commercial use. You
 							agree not to reproduce, distribute, modify, or create derivative works from any content without our express written consent.
@@ -76,14 +77,14 @@ export default function Terms() {
 				<div className="vertical gap-2">
 					<h2 className="text-xl font-semibold">6. Limitation of Liability</h2>
 					<p>
-						To the fullest extent permitted by law, ReclaimLA and its owners, employees, or agents shall not be liable for any direct, indirect, incidental, special, consequential, or
+						To the fullest extent permitted by law, Reclaimand its owners, employees, or agents shall not be liable for any direct, indirect, incidental, special, consequential, or
 						exemplary damages arising out of or in connection with your use of the Site or Services.
 					</p>
 				</div>
 				<div className="vertical gap-2">
 					<h2 className="text-xl font-semibold">7. Indemnification</h2>
 					<p>
-						You agree to indemnify and hold harmless ReclaimLA, its affiliates, employees, and agents from any claims, damages, losses, liabilities, or expenses (including attorney&apos;s
+						You agree to indemnify and hold harmless Reclaim, its affiliates, employees, and agents from any claims, damages, losses, liabilities, or expenses (including attorney&apos;s
 						fees) arising out of or related to your use of the Site or Services, or your breach of these Terms.
 					</p>
 				</div>

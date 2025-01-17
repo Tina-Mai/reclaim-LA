@@ -10,7 +10,7 @@ export default function Privacy() {
 					<b>Last updated:</b> January 17, 2025
 				</p>
 				<p>
-					Thank you for choosing ReclaimLA.org (“ReclaimLA,” “we,” “us,” or “our”). We value the trust you place in us when you provide your personal information and are committed to
+					Thank you for choosing ReclaimLA.org (Reclaim,” “we,” “us,” or “our”). We value the trust you place in us when you provide your personal information and are committed to
 					maintaining that trust. This Privacy Policy describes how we collect, use, store, and protect your information when you use our services.
 				</p>
 				<div className="vertical gap-2">
@@ -32,6 +32,7 @@ export default function Privacy() {
 							Communications: We may send you emails regarding your requested services or updates to our policies. We will not send you marketing or promotional materials without your
 							explicit consent.
 						</li>
+						<li>Product Updates: We may contact you via email or phone number to inform you about new features, improvements, or important updates related to Reclaim&apos;s services.</li>
 						<li>Improving Our Services: We analyze the data we collect to understand usage trends, improve our platform, and enhance user experience.</li>
 					</ul>
 				</div>
