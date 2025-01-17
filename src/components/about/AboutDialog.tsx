@@ -2,10 +2,14 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const About = () => {
+interface AboutProps {
+	className?: string;
+}
+
+const About = ({ className = "hover:opacity-70 transition-opacity duration-300" }: AboutProps) => {
 	return (
 		<Dialog>
-			<DialogTrigger className="hover:opacity-70 transition-opacity duration-300">About</DialogTrigger>
+			<DialogTrigger className={className}>About</DialogTrigger>
 			<DialogContent>
 				<DialogHeader className="vertical gap-3 pb-3">
 					<DialogTitle>About Us</DialogTitle>

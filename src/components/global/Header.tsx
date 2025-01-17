@@ -14,7 +14,7 @@ interface MobileMenuItemProps {
 	className?: string;
 }
 
-const MobileMenuItem = ({ href, index, children, className = "block p-1 hover:bg-zinc-100 rounded-lg text-center" }: MobileMenuItemProps) => {
+const MobileMenuItem = ({ href, index, children, className = "block p-1 hover:bg-zinc-100 rounded-md text-center" }: MobileMenuItemProps) => {
 	return (
 		<motion.div
 			variants={{
@@ -111,14 +111,12 @@ const Header = () => {
 					>
 						<nav className="flex flex-col gap-2 text-zinc-500 font-medium">
 							<MobileMenuItem href="#" index={0}>
-								<AboutDialog />
+								<AboutDialog className="block w-full p-1 hover:bg-zinc-100 rounded-lg text-center" />
 							</MobileMenuItem>
 							<MobileMenuItem href="mailto:team@reclaim.org?subject=ReclaimLA.org" index={1}>
 								Contact
 							</MobileMenuItem>
-							<MobileMenuItem href="/login" index={2}>
-								<PhoneDialog />
-							</MobileMenuItem>
+							<PhoneDialog />
 						</nav>
 					</motion.div>
 				)}
