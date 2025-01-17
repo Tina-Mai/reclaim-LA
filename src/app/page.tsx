@@ -15,12 +15,13 @@ export default function Home() {
 						A voice companion to help you catalog lost belongings room by room, streamlining your home inventory for faster, easier insurance claims
 					</div>
 
+					<PhoneInput />
+
 					<div className="vertical justify-center items-center text-center text-sm text-zinc-800 gap-2 opacity-50">
 						<div>Built by students at</div>
 						<Image src="/stanford-logo.png" alt="Logo" width={100} height={100} className="grayscale" />
 					</div>
 				</div>
-				<PhoneInput />
 				<div className="w-full relative -z-10 -mt-[40rem] md:-mt-96 h-[90vh] md:h-[80vh]">
 					<div className="absolute w-full h-32 top-0 bg-gradient-to-b from-background to-transparent z-10"></div>
 					<Image src="/neighborhood.png" alt="Los Angeles Neighborhood" width={0} height={0} sizes="100vw" className="w-full h-full object-cover rounded-[2rem]" priority />
