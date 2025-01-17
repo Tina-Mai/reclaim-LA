@@ -7,15 +7,16 @@ enabled = true
 # Port to use for the API URL.
 port = 54321
 # Schemas to expose in your API. Tables, views and stored procedures in this schema will get API
-# endpoints. `public` is always included.
+# endpoints. `public` and `graphql_public` schemas are included by default.
 schemas = ["public", "graphql_public"]
-# Extra schemas to add to the search_path of every request. `public` is always included.
+# Extra schemas to add to the search_path of every request.
 extra_search_path = ["public", "extensions"]
 # The maximum number of rows returns from a view, table, or stored procedure. Limits payload size
 # for accidental or malicious requests.
 max_rows = 1000
 
 [api.tls]
+# Enable HTTPS endpoints locally using a self-signed certificate.
 enabled = false
 
 [db]
@@ -72,6 +73,8 @@ port = 54324
 # Uncomment to expose additional ports for testing user applications that send emails.
 # smtp_port = 54325
 # pop3_port = 54326
+# admin_email = "admin@email.com"
+# sender_name = "Admin"
 
 [storage]
 enabled = true
@@ -146,7 +149,7 @@ enable_signup = false
 # If enabled, users need to confirm their phone number before signing in.
 enable_confirmations = false
 # Template for sending OTP to users
-template = "Your code is {{ .Code }} ."
+template = "Your code is {{ .Code }}"
 # Controls the minimum amount of time that must pass before sending another sms otp.
 max_frequency = "5s"
 
@@ -234,8 +237,17 @@ enabled = true
 # Configure one of the supported request policies: `oneshot`, `per_worker`.
 # Use `oneshot` for hot reload, or `per_worker` for load testing.
 policy = "oneshot"
+# Port to attach the Chrome inspector for debugging edge functions.
 inspector_port = 8083
 
+# Use these configurations to customize your Edge Function.
+# [functions.MY_FUNCTION_NAME]
+# enabled = true
+# verify_jwt = true
+# import_map = "./functions/MY_FUNCTION_NAME/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+# entrypoint = "./functions/MY_FUNCTION_NAME/index.ts"
 [analytics]
 enabled = true
 port = 54327
