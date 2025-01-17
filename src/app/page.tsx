@@ -11,7 +11,7 @@ export default function Home() {
 		<main>
 			<div className="vertical min-h-[calc(100dvh)] justify-center items-center">
 				<Header />
-				<div className="flex flex-col gap-8 sm:gap-10 max-w-screen-md justify-center items-center pt-28 md:pt-36 pb-12 px-5">
+				<div className="vertical gap-8 sm:gap-10 max-w-screen-md justify-center items-center pt-28 md:pt-36 pb-12 px-5">
 					<h1 className="text-center text-5xl sm:text-7xl font-serif font-medium">Helping you document lost items after the LA fires</h1>
 					<div className="text-center sm:text-lg text-zinc-500">
 						A voice companion to help you catalog lost belongings room by room, streamlining your home inventory for faster, easier insurance claims

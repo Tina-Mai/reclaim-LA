@@ -12,10 +12,11 @@ const Footer = () => {
 						<div className="text-sm text-zinc-500">© 2024 ReclaimLA.org</div>
 					</Link>
 
-					<div className="flex flex-col md:flex-row gap-5 font-medium items-center">
+					<div className="flex flex-col md:flex-row gap-5 items-center">
 						<Link href="/about">About</Link>
 						<Link href="mailto:team@reclaim.org?subject=ReclaimLA.org">Contact</Link>
 						<Link href="/privacy">Privacy</Link>
+						<Link href="/terms">Terms of Service</Link>
 					</div>
 				</div>
 			</div>

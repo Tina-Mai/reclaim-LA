@@ -22,9 +22,9 @@ const MobileMenuItem = ({ href, index, children, className = "block p-1 hover:bg
 					opacity: 1,
 					x: 0,
 					transition: {
-						delay: i * 0.1,
+						delay: i * 0.15,
 						type: "spring",
-						stiffness: 260,
+						stiffness: 100,
 						damping: 20,
 					},
 				}),
@@ -44,8 +44,22 @@ const Header = () => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 	return (
-		<motion.div initial={{ y: -100 }} animate={{ y: 0 }} transition={{ type: "spring", stiffness: 260, damping: 20 }} className="fixed top-0 left-0 p-3 sm:p-5 w-full justify-center z-50">
-			<motion.div layout className="horizontal place-self-center justify-between items-center p-2 bg-white/80 backdrop-blur-md rounded-xl shadow-md w-full max-w-screen-sm">
+		<motion.div
+			initial={{ y: -100 }}
+			animate={{ y: 0 }}
+			transition={{
+				type: "spring",
+				stiffness: 70,
+				damping: 20,
+				duration: 0.8,
+			}}
+			className="fixed top-0 left-0 p-3 sm:p-5 w-full justify-center z-50"
+		>
+			<motion.div
+				layout
+				transition={{ duration: 0.4 }}
+				className="horizontal place-self-center justify-between items-center p-2 bg-white/80 backdrop-blur-md rounded-xl shadow-md w-full max-w-screen-sm"
+			>
 				<Link href="/" className="horizontal items-center gap-3 px-3 hover:opacity-70 transition-opacity duration-300">
 					<Logo />
 					<div className="text-2xl font-serif font-medium">ReclaimLA.org</div>
@@ -70,7 +84,7 @@ const Header = () => {
 						stroke="currentColor"
 						viewBox="0 0 24 24"
 						animate={{ rotate: isMobileMenuOpen ? 180 : 0 }}
-						transition={{ type: "spring", stiffness: 260, damping: 20 }}
+						transition={{ duration: 0.5, ease: "easeInOut" }}
 					>
 						{isMobileMenuOpen ? (
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -88,7 +102,12 @@ const Header = () => {
 						initial={{ opacity: 0, y: -20 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: -20 }}
-						transition={{ type: "spring", stiffness: 300, damping: 25 }}
+						transition={{
+							type: "spring",
+							stiffness: 70,
+							damping: 15,
+							duration: 0.5,
+						}}
 						className="sm:hidden absolute top-full left-0 right-0 mt-2 mx-3 p-4 bg-white/95 backdrop-blur-md rounded-xl shadow-lg"
 					>
 						<nav className="flex flex-col gap-2 text-zinc-500 font-medium">
