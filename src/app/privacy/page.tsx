@@ -67,7 +67,7 @@ export default function Privacy() {
 					</ul>
 				</div>
 				<div className="vertical gap-2">
-					<h2 className="text-xl font-semibold">6. Children's Privacy</h2>
+					<h2 className="text-xl font-semibold">6. Children&apos;s Privacy</h2>
 					<p>
 						Our services are not intended for individuals under the age of 13, and we do not knowingly collect information from children. If you believe a child under 13 has provided
 						personal information to us, please contact us so we can promptly delete that information.
