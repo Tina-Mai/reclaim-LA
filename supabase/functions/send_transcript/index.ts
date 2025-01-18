@@ -11,9 +11,12 @@ Deno.serve(async (req) => {
   const { call_id } = await req.json()
   
   // Call Bland AI API to get call details
+  const apiKey = Deno.env.get('BLAND_API_KEY');
+  if (!apiKey) throw new Error('BLAND_API_KEY is not set');
+
   const response = await fetch(`https://api.bland.ai/v1/calls/${call_id}`, {
     headers: {
-      'Authorization': Deno.env.get('BLAND_API_KEY'),
+      'Authorization': apiKey,
       'Content-Type': 'application/json'
     }
   })

@@ -8,9 +8,17 @@
 // Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 import OpenAI from "https://deno.land/x/openai@v4.20.1/mod.ts";
-import { config } from "https://deno.land/x/dotenv/mod.ts";
 
 console.log("API Key exists:", !!Deno.env.get("OPENAI_API_KEY_SECRET"));
+
+interface Item {
+  item_name: string;
+  price: number;
+  color: string;
+  brand: string;
+  room: string;
+  description: string;
+}
 
 Deno.serve(async (req) => {
   const { prompt, email } = await req.json();
@@ -119,7 +127,7 @@ Deno.serve(async (req) => {
   const csvHeader = ['item_name', 'price', 'color', 'brand', 'room', 'description'].join(',');
   
   // Convert items to CSV rows
-  const csvRows = parsedData.items.map(item => [
+  const csvRows = parsedData.items.map((item: Item) => [
     `"${item.item_name}"`,
     item.price,
     `"${item.color}"`,

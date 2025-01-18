@@ -77,9 +77,10 @@ serve(async (req) => {
 
   } catch (error) {
     // Handle any errors that occur during execution
-    return new Response(JSON.stringify({ error: error.message }), {
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    return new Response(JSON.stringify({ error: errorMessage }), {
       headers: { "Content-Type": "application/json" },
-      status: 500, // Return 500 Internal Server Error for any unexpected errors
+      status: 500,
     });
   }
 });
