@@ -2,6 +2,9 @@
 // https://deno.land/manual/getting_started/setup_your_environment
 // This enables autocomplete, go to definition, etc.
 
+
+// deploy command: supabase functions deploy initiate_call --project-ref wlbgwlnszsnuhfmjgsxj
+
 // Import type definitions for Supabase Edge Runtime
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 
@@ -12,6 +15,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 const BLAND_API_URL = "https://api.bland.ai/v1/calls";
 // Get API key from environment variables
 const BLAND_API_KEY = Deno.env.get("BLAND_API_KEY");
+const PATHWAY_ID = Deno.env.get("BLAND_PATHWAY_ID");
 
 console.log("Started initiate_call function")
 
@@ -46,7 +50,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         phone_number,
-        pathway_id: "9ac11b35-8525-4ae8-b75a-adecbe8c2bc4", // Specific pathway ID for the AI conversation
+        pathway_id: PATHWAY_ID, // Specific pathway ID for the AI conversation
         // Define webhook URL that will receive call transcript
         // {call_id} is a placeholder that Bland AI will replace with the actual call ID
         webhook: `https://wlbgwlnszsnuhfmjgsxj.supabase.co/functions/v1/send_transcript?call_id={call_id}`
