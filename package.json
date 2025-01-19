@@ -25,7 +25,8 @@
 		"react-phone-number-input": "^3.4.11",
 		"supabase": "^2.6.8",
 		"tailwind-merge": "^2.6.0",
-		"tailwindcss-animate": "^1.0.7"
+		"tailwindcss-animate": "^1.0.7",
+		"twilio": "^5.4.2"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3",
