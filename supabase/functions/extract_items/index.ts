@@ -21,9 +21,10 @@ interface Item {
 }
 
 Deno.serve(async (req) => {
-  const { prompt, email } = await req.json();
+  const { prompt, phone_number } = await req.json();
 
   console.log("Received prompt:", prompt);
+  console.log("Received phone number:", phone_number);
   
   const openai = new OpenAI({
     apiKey: Deno.env.get("OPENAI_API_KEY_SECRET"),
@@ -37,7 +38,7 @@ Deno.serve(async (req) => {
         "content": [
           {
             "type": "text",
-            "text": "You are an insurance claims helper.\nThe user will describe one or more items they wish to claim. For each item, you must capture the following details:\n\t1.\tItem name\n\t2.\tEstimated price \n\t3.\tColor\n\t4.\tBrief description\n\t5.\tBrand\n\t6.\tRoom where the item is located\n\nTask:\nBased on the user’s statements (provided as a transcript), output a JSON array of arrays, where each inner array corresponds to a single claimed item. If price is not given, set it to -1.\nJSON Format:\t\t\n1. Do not include any extra fields beyond these six.\n2.\tGround your answers in the context of the user’s transcript (i.e., only include items that the user actually mentioned).\n3.\tIf an item detail is missing or not mentioned, leave that position blank (as an empty string)."
+            "text": "You are an insurance claims helper.\nThe user will describe one or more items they wish to claim. For each item, you must capture the following details:\n\t1.\tItem name\n\t2.\tEstimated price \n\t3.\tColor\n\t4.\tBrief description\n\t5.\tBrand\n\t6.\tRoom where the item is located\n\nTask:\nBased on the user's statements (provided as a transcript), output a JSON array of arrays, where each inner array corresponds to a single claimed item. If price is not given, set it to -1.\nJSON Format:\t\t\n1. Do not include any extra fields beyond these six.\n2.\tGround your answers in the context of the user's transcript (i.e., only include items that the user actually mentioned).\n3.\tIf an item detail is missing or not mentioned, leave that position blank (as an empty string)."
           }
         ]
       },
@@ -141,20 +142,56 @@ Deno.serve(async (req) => {
 
   console.log(csv)
 
-  // Send email with CSV
-  const emailResponse = await fetch('https://wlbgwlnszsnuhfmjgsxj.supabase.co/functions/v1/send_email', {
+
+  // Save CSV to Supabase storage with UPSERT operation
+  const supabaseResponse = await fetch(
+    'https://wlbgwlnszsnuhfmjgsxj.supabase.co/rest/v1/phone_csvs', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'apikey': Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '',
+      'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
+      'Prefer': 'merge-duplicates'  // This tells Supabase to update if exists
     },
     body: JSON.stringify({
-      email: email || 'zanesabbagh@stanford.edu',
-      csvContent: csv
+      phone: phone_number,
+      csv_content: csv,
+      created_at: new Date().toISOString()
     })
   });
 
-  const emailData = await emailResponse.json();
-  console.log('Email sent:', emailData);
+  console.log('Response status:', supabaseResponse.status);
+  console.log('Response headers:', Object.fromEntries(supabaseResponse.headers));
+  
+  if (!supabaseResponse.ok) {
+    const errorText = await supabaseResponse.text();
+    console.error('Error saving CSV. Status:', supabaseResponse.status);
+    console.error('Error details:', errorText);
+    throw new Error(`Failed to save CSV: ${errorText}`);
+  } else {
+    console.log('CSV saved successfully. Status:', supabaseResponse.status);
+  }
+
+  // send text message to phone number
+  const smsResponse = await fetch(
+    'https://wlbgwlnszsnuhfmjgsxj.supabase.co/functions/v1/send_sms',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
+      },
+      body: JSON.stringify({
+        toMobile: phone_number,
+        textMessage: "We've got your claims document to send. Please reply with the best email address for us to send it to"
+      })
+    }
+  );
+
+  if (!smsResponse.ok) {
+    console.error('Failed to send SMS:', await smsResponse.text());
+  }
+  console.log('SMS sent successfully. Status:', smsResponse.status);
 
   // Return both JSON and CSV
   return new Response(
