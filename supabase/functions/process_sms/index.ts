@@ -32,6 +32,7 @@ Deno.serve(async (req) => {
   console.log("From: ", from);
 
   const phoneNumber = from
+  console.log("Processing extraction for phone number: ", phoneNumber);
 
   // Query Supabase for the most recent CSV content from the phone_csvs table
   const { data, error } = await supabase

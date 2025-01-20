@@ -22,10 +22,10 @@ const handler = async (request: Request): Promise<Response> => {
             'Authorization': `Bearer ${RESEND_API_KEY}`
         },
         body: JSON.stringify({
-            from: 'zane@reclaimla.org',
+            from: 'catalog@reclaimla.org',
             to: finalEmail,
-            subject: 'hello homie',
-            html: '<strong>it works!</strong>',
+            subject: 'Your Reclaim LA Claims Document',
+            html: 'Great chatting with you on the phone today! \n I\'ve attached your claims document to this email, which you can either send directly to your insurance company or edit in Microsoft Excel, Google Sheets, or Apple Numbers. \n Best of luck, and reach out to zanesabbagh@stanford.edu if you have any questions or feedback. \n Good luck with everything, \n The Reclaim LA Team',
             attachments: [{
                 filename: 'data.csv',
                 content: finalCsvBase64,
