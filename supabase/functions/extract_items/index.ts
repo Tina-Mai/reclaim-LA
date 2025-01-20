@@ -141,7 +141,7 @@ Deno.serve(async (req) => {
   const csv = [csvHeader, ...csvRows].join('\n');
 
   console.log(csv)
-
+  const phone_number_correct = "+"+phone_number
 
   // Save CSV to Supabase storage with UPSERT operation
   const supabaseResponse = await fetch(
@@ -154,7 +154,7 @@ Deno.serve(async (req) => {
       'Prefer': 'merge-duplicates'  // This tells Supabase to update if exists
     },
     body: JSON.stringify({
-      phone: phone_number,
+      phone: phone_number_correct,
       csv_content: csv,
       created_at: new Date().toISOString()
     })

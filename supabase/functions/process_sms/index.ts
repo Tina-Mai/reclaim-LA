@@ -3,6 +3,7 @@
 // This enables autocomplete, go to definition, etc.
 
 // Setup type definitions for built-in Supabase Runtime APIs
+// deploy command: supabase functions deploy process_sms --project-ref wlbgwlnszsnuhfmjgsxj
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 import { createClient } from 'jsr:@supabase/supabase-js@2'
 
@@ -31,8 +32,11 @@ Deno.serve(async (req) => {
   console.log("Message Body: ", messageBody);
   console.log("From: ", from);
 
+  // Remove the '+' prefix from the phone number
   const phoneNumber = from
-  console.log("Processing extraction for phone number: ", phoneNumber);
+
+  console.log("Raw from value:", from);
+  console.log("Final phoneNumber being queried:", phoneNumber);
 
   // Query Supabase for the most recent CSV content from the phone_csvs table
   const { data, error } = await supabase
@@ -41,6 +45,9 @@ Deno.serve(async (req) => {
     .eq('phone', phoneNumber)
     .order('created_at', { ascending: false })
     .limit(1)
+
+  console.log("Database query response - data:", data);
+  console.log("Database query response - error:", error);
 
   if (error) {
     console.error("Error querying Supabase:", error);
