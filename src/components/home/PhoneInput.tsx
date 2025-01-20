@@ -46,7 +46,9 @@ const PhoneInputComponent = () => {
 			}, 3000);
 		} catch (error) {
 			console.error("Error starting call:", error);
-			toast.error("Failed to start the call :( Please try again.");
+			toast.error("Failed to start the call :(", {
+				description: "Please try again.",
+			});
 		} finally {
 			setIsLoading(false);
 		}
