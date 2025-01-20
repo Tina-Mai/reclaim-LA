@@ -141,7 +141,7 @@ Deno.serve(async (req) => {
   const csv = [csvHeader, ...csvRows].join('\n');
 
   console.log(csv)
-  const phone_number_correct = "+"+phone_number
+  const phone_number_correct = "+" + phone_number.trim()
 
   // Save CSV to Supabase storage with UPSERT operation
   const supabaseResponse = await fetch(
