@@ -13,6 +13,12 @@ const supabase = createClient(
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || ''
 )
 
+interface PhoneCsv {
+  phone: string;
+  csv_content: string;
+  created_at: string;
+}
+
 Deno.serve(async (req) => {
   const formData = await req.formData()
   // extract csv from form data
@@ -29,7 +35,7 @@ Deno.serve(async (req) => {
 
   // Query Supabase for the most recent CSV content from the phone_csvs table
   const { data, error } = await supabase
-    .from('phone_csvs')
+    .from<PhoneCsv>('phone_csvs')
     .select('csv_content')
     .eq('phone', phoneNumber)
     .order('created_at', { ascending: false })

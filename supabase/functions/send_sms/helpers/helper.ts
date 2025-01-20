@@ -1,5 +1,13 @@
 import * as base64 from "https://denopkg.com/chiefbiiko/base64/mod.ts";
-import { Sms } from "../types/interface.ts";
+import { Sms } from "../types/interface";
+
+interface TwilioResponse {
+  sid: string;
+  status: string;
+  message: string;
+  error_code?: string;
+  error_message?: string;
+}
 
 export class TwilioSms {
   private authorizationHeader: string;
@@ -11,7 +19,7 @@ export class TwilioSms {
         new TextEncoder().encode(accountSID + ":" + authToken)
       );
   }
-  async sendSms(payload: Sms): Promise<any> {
+  async sendSms(payload: Sms): Promise<TwilioResponse> {
     const formData = new URLSearchParams();
     
     // Add basic SMS parameters

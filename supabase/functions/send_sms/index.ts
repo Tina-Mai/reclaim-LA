@@ -5,7 +5,7 @@
 //deploy command: supabase functions deploy send_sms --project-ref 
 
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
-import { TwilioSms } from "./helpers/helper.ts";
+import { TwilioSms } from "./helpers/helper";
 
 const accountSid = Deno.env.get("TWILIO_PROD_SID") || "";
 const authToken = Deno.env.get("TWILIO_PROD_AUTH_TOKEN") || "";
