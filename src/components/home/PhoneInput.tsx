@@ -39,8 +39,8 @@ const PhoneInputComponent = () => {
 
 			setIsSuccess(true);
 			toast({
-				title: "Call initiated",
-				description: "You will receive a call shortly.",
+				title: "Call sent ☎️",
+				description: "You should be receiving a call from us shortly!",
 			});
 
 			// Reset success state after 3 seconds
@@ -52,7 +52,7 @@ const PhoneInputComponent = () => {
 			console.error("Error starting call:", error);
 			toast({
 				title: "Error",
-				description: "Failed to start the call. Please try again.",
+				description: "Failed to start the call :( Please try again.",
 				variant: "destructive",
 			});
 		} finally {
