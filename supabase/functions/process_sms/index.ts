@@ -71,7 +71,7 @@ Deno.serve(async (req) => {
   // Create TwiML response
   const twimlResponse = `<?xml version="1.0" encoding="UTF-8"?>
     <Response>
-      <Message>Thanks! We just sent an email with your claims document to: ${messageBody}\nDon't forget to check your spam if you don't see it.</Message>
+      <Message>Thanks! We just sent an email with your doc to: ${messageBody}\n\nIt might take a few minutes to arrive, and don't forget to check your spam if you don't see it.\n\nThanks for using Reclaim!\n- Zane, Matthew, and Tina</Message>
     </Response>`
 
   // Send email with CSV

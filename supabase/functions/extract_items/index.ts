@@ -183,7 +183,7 @@ Deno.serve(async (req) => {
       },
       body: JSON.stringify({
         toMobile: phone_number,
-        textMessage: "We've got your claims document to send. Please reply with the best email address for us to send it to"
+        textMessage: "Hey, this is ReclaimLA.org :) We have your claims document to send from the recent call. Please reply with the best email for us to send it to"
       })
     }
   );
