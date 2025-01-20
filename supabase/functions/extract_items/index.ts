@@ -129,12 +129,12 @@ Deno.serve(async (req) => {
   
   // Convert items to CSV rows
   const csvRows = parsedData.items.map((item: Item) => [
-    `"${item.item_name}"`,
-    item.price,
-    `"${item.color}"`,
-    `"${item.brand}"`,
-    `"${item.room}"`,
-    `"${item.description}"`
+    `"${item.item_name || ''}"`,
+    item.price ?? '',
+    `"${item.color || ''}"`,
+    `"${item.brand || ''}"`,
+    `"${item.room || ''}"`,
+    `"${item.description || ''}"`
   ].join(','));
   
   // Combine header and rows
