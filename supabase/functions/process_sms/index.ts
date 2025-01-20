@@ -32,6 +32,7 @@ Deno.serve(async (req) => {
   console.log("From: ", from);
 
   const phoneNumber = from
+  console.log("Processing extraction for phone number: ", phoneNumber);
 
   // Query Supabase for the most recent CSV content from the phone_csvs table
   const { data, error } = await supabase
@@ -46,8 +47,18 @@ Deno.serve(async (req) => {
     return new Response("Error querying Supabase", { status: 500 });
   }
 
+  if (!data || data.length === 0) {
+    console.error("No CSV data found for phone number:", phoneNumber);
+    return new Response("No CSV data found", { status: 404 });
+  }
+
   const [latestEntry] = data;
-  const csvContent = latestEntry?.csv_content;
+  if (!latestEntry?.csv_content) {
+    console.error("CSV content is undefined for latest entry");
+    return new Response("CSV content is missing", { status: 500 });
+  }
+
+  const csvContent = latestEntry.csv_content;
   console.log("CSV Content: ", csvContent);
   
   // Create TwiML response
