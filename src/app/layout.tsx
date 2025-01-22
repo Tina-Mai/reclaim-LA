@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import { Manrope } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
@@ -100,6 +101,7 @@ export default function RootLayout({
 			<body className={`${manrope.className} antialiased`}>
 				<main>{children}</main>
 				<Toaster />
+				<Analytics />
 			</body>
 		</html>
 	);
