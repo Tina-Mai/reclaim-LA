@@ -22,7 +22,9 @@ const PhoneDialog = ({ size = "default" }: { size?: "default" | "lg" }) => {
 				<div className="pt-2 pb-6">
 					<Visual />
 				</div>
-				<PhoneInput />
+				<div className="flex justify-center">
+					<PhoneInput />
+				</div>
 			</DialogContent>
 		</Dialog>
 	);
