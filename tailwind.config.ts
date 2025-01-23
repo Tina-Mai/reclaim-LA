@@ -10,7 +10,7 @@ export default {
                 background: "var(--background)",
                 foreground: "var(--foreground)",
                 theme: {
-                    green: "#DDE9D3",
+                    green: "#BDC9A3",
                     blue: "#E5EAF2",
                     orange: "#FCA06D",
                 },
@@ -42,6 +42,14 @@ export default {
                 fadeIn: {
                     '0%': { opacity: '0.5' },
                     '100%': { opacity: '1' }
+                },
+                shine: {
+                    '0%': { 
+                        transform: 'translateX(100%)'
+                    },
+                    '100%': {
+                        transform: 'translateX(-100%)'
+                    }
                 }
             },
             animation: {
@@ -50,7 +58,8 @@ export default {
                 'flow-line-vertical': 'flowLineVertical 2s ease-in-out infinite',
                 'flow-arrow-vertical': 'flowArrowVertical 2s ease-in-out infinite',
                 'fade-in': 'fadeIn 0.5s ease-out forwards',
-                'fade-in-delayed': 'fadeIn 0.5s ease-out 0.3s forwards'
+                'fade-in-delayed': 'fadeIn 0.5s ease-out 0.3s forwards',
+                'shine': 'shine 2s ease-in-out infinite'
             }
         },
     },

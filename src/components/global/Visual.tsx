@@ -32,8 +32,15 @@ const Visual = () => {
 				/>
 			</div>
 			<div className="vertical gap-3 items-center w-40 animate-fade-in-delayed">
-				<div className="bg-theme-orange rounded-full p-4">
-					<FileSpreadsheet />
+				<div className="bg-theme-green rounded-full p-4 relative overflow-hidden">
+					<div
+						className="absolute inset-0 w-[200%] h-full -left-[50%] animate-shine"
+						style={{
+							background:
+								"linear-gradient(45deg, transparent 0%, transparent 25%, rgba(255, 255, 255, 0.1) 35%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.1) 65%, transparent 75%, transparent 100%)",
+						}}
+					/>
+					<FileSpreadsheet className="relative z-10" />
 				</div>
 				<div className="text-sm text-zinc-500 text-center">Cataloged losses ready for insurance claims</div>
 			</div>
