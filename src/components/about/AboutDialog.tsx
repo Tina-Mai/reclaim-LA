@@ -19,8 +19,15 @@ const About = ({ className = "hover:opacity-70 transition-opacity duration-300" 
 							When we saw the tragic news about the wildfires in LA, we knew we had to do our best to create something to help those affected. We wanted to get something out there as
 							soon as possible, so we built Reclaim in just a few days and will continue improving it to help those who lost their homes in the fires.
 						</p>
+						<p>
+							This project is currently self-funded. We would greatly appreciate any support you can provide to help us continue running Reclaim — any donations will be used towards API
+							credits, with additional funds being donated to existing LA wildfire relief funds.
+						</p>
 					</DialogDescription>
 				</DialogHeader>
+				<Button asChild>
+					<Link href="https://www.venmo.com/u/reclaimLA">Support the Project</Link>
+				</Button>
 				<Button asChild>
 					<Link href="mailto:team@reclaim.org?subject=ReclaimLA.org">Contact Us</Link>
 				</Button>
