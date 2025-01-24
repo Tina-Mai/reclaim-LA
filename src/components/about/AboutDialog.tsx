@@ -26,7 +26,9 @@ const About = ({ className = "hover:opacity-70 transition-opacity duration-300" 
 					</DialogDescription>
 				</DialogHeader>
 				<Button asChild>
-					<Link href="https://www.venmo.com/u/reclaimLA">Support the Project</Link>
+					<Link href="https://www.venmo.com/u/reclaimLA" target="_blank" rel="noopener noreferrer">
+						Support the Project
+					</Link>
 				</Button>
 				<Button asChild>
 					<Link href="mailto:team@reclaim.org?subject=ReclaimLA.org">Contact Us</Link>
