@@ -44,6 +44,7 @@ Reclaim LA is a platform designed to help Los Angeles residents who lost their h
 - Testing and bug fixes
 
 ### Matthew
+- User interviews and product research --> led to focus on phone call rather than images and receipts
 - Supabase Setup
 - BlandAI Setup
 - Creation of primary conversational pathway for phone call (https://drive.google.com/file/d/12G6Gy6ssIGjeT951RGOuK9k08dhJ4u5P/view?usp=sharing)
