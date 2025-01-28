@@ -30,7 +30,9 @@ Deno.serve(async (req) => {
     })
 
     if (!response.ok) {
-      throw new Error(`Bland API error: ${response.status} ${response.statusText}`);
+      // Get the error message from the response body if possible
+      const errorBody = await response.text();
+      throw new Error(`Bland API error: ${response.status} ${response.statusText}\nDetails: ${errorBody}`);
     }
 
     const callData = await response.json()
@@ -39,7 +41,8 @@ Deno.serve(async (req) => {
     const data = {
       prompt: callData.concatenated_transcript,
       email: callData.variables?.email,
-      phone_number: phone_number
+      phone_number: phone_number,
+      call_id: call_id
     }
 
     // Call extract_items endpoint

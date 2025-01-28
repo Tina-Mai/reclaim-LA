@@ -42,12 +42,26 @@ Deno.serve(async (req) => {
     .order('created_at', { ascending: false })
     .limit(1)
 
+  console.log("Raw query response:", { data, error });
+  
   if (error) {
     console.error("Error querying Supabase:", error);
     return new Response("Error querying Supabase", { status: 500 });
   }
 
   if (!data || data.length === 0) {
+    console.log("Data:", data);
+    console.log("Data length:", data.length);
+    console.log("Phone number format received:", typeof phoneNumber, phoneNumber);
+    console.log("Checking phone_csvs table structure...");
+    
+    // Additional query to check table contents
+    const { data: tableCheck, error: tableError } = await supabase
+      .from('phone_csvs')
+      .select('phone')
+      .limit(5);
+      
+    console.log("Sample of phone numbers in database:", tableCheck);
     console.error("No CSV data found for phone number:", phoneNumber);
     return new Response("No CSV data found", { status: 404 });
   }
