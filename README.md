@@ -46,13 +46,14 @@ Reclaim LA is a platform designed to help Los Angeles residents who lost their h
 ### Matthew
 - Supabase Setup
 - BlandAI Setup
-- Setup of primary conversational pathway for phone call
+- Creation of primary conversational pathway for phone call (https://drive.google.com/file/d/12G6Gy6ssIGjeT951RGOuK9k08dhJ4u5P/view?usp=sharing)
 - Edge function to send phone call to user
 - Edge function to extract and send transcript on call completion
 - Conversational pathway adjustments
 - Announcement in 3 local newsletters
 - Axios Interview
 - Testing and bug fixes
+
 
 ### Tina
 - Website Setup
