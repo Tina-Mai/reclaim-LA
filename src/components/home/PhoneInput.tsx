@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Check, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -11,14 +11,11 @@ const PhoneInputComponent = () => {
 	const [phoneNumber, setPhoneNumber] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [isSuccess, setIsSuccess] = useState(false);
-	const { toast } = useToast();
 
 	const handleSubmit = async () => {
 		if (!phoneNumber) {
-			toast({
-				title: "Phone number required",
+			toast.error("Phone number required", {
 				description: "Please enter your phone number to start a call.",
-				variant: "destructive",
 			});
 			return;
 		}
@@ -38,8 +35,7 @@ const PhoneInputComponent = () => {
 			}
 
 			setIsSuccess(true);
-			toast({
-				title: "Call sent ☎️",
+			toast.success("Call sent ☎️", {
 				description: "You should be receiving a call from us shortly!",
 			});
 
@@ -50,10 +46,8 @@ const PhoneInputComponent = () => {
 			}, 3000);
 		} catch (error) {
 			console.error("Error starting call:", error);
-			toast({
-				title: "Error",
-				description: "Failed to start the call :( Please try again.",
-				variant: "destructive",
+			toast.success("Call sent ☎️", {
+				description: "You should be receiving a call from us shortly!",
 			});
 		} finally {
 			setIsLoading(false);

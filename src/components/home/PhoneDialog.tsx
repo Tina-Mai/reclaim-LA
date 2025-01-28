@@ -2,6 +2,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import PhoneInput from "@/components/home/PhoneInput";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import Visual from "@/components/global/Visual";
 
 const PhoneDialog = ({ size = "default" }: { size?: "default" | "lg" }) => {
 	return (
@@ -18,7 +19,12 @@ const PhoneDialog = ({ size = "default" }: { size?: "default" | "lg" }) => {
 					</DialogDescription>
 				</DialogHeader>
 
-				<PhoneInput />
+				<div className="pt-2 pb-6">
+					<Visual />
+				</div>
+				<div className="flex justify-center">
+					<PhoneInput />
+				</div>
 			</DialogContent>
 		</Dialog>
 	);

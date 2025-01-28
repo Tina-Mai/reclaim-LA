@@ -9,7 +9,7 @@ const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
 
 const handler = async (request: Request): Promise<Response> => {
     // Parse request body or use defaults
-    const { email, csvContent, csvBase64 } = await request.json().catch(() => ({}));
+    const { email, csvContent } = await request.json().catch(() => ({}));
     
     const finalEmail = email || 'mwirtz@stanford.edu';
     const finalCsvContent = csvContent || "name,age,city\nJohn,30,New York\nJane,25,Los Angeles";
@@ -24,8 +24,8 @@ const handler = async (request: Request): Promise<Response> => {
         body: JSON.stringify({
             from: 'catalog@reclaimla.org',
             to: finalEmail,
-            subject: 'Your Reclaim LA Claims Document',
-            html: 'Great chatting with you on the phone today! \n I\'ve attached your claims document to this email, which you can either send directly to your insurance company or edit in Microsoft Excel, Google Sheets, or Apple Numbers. \n Best of luck, and reach out to zanesabbagh@stanford.edu if you have any questions or feedback. \n Good luck with everything, \n The Reclaim LA Team',
+            subject: '🟠 Your Reclaim LA Claims Document',
+            html: 'Great chatting with you on the phone today! \n\nWe\'ve attached your claims document to this email, which you can either send directly to your insurance company or edit in Microsoft Excel, Google Sheets, or Apple Numbers. \n\nBest of luck, and please do not hesitate to reach out to us at team@reclaimLA.org if there\'s any other way we could help. \n\nZane, Matthew, and Tina (the Reclaim team) \nwww.reclaimLA.org',
             attachments: [{
                 filename: 'data.csv',
                 content: finalCsvBase64,

@@ -5,6 +5,7 @@ import Header from "@/components/global/Header";
 import Footer from "@/components/global/Footer";
 import PhoneInput from "@/components/home/PhoneInput";
 import PhoneDialog from "@/components/home/PhoneDialog";
+import Visual from "@/components/global/Visual";
 
 export default function Home() {
 	return (
@@ -34,6 +35,8 @@ export default function Home() {
 				<div id="learn-more-target" className="font-serif text-center text-4xl w-full max-w-screen-sm font-medium">
 					Weeks of remembering and creating a loss inventory reduced to minutes
 				</div>
+
+				<Visual />
 
 				<PhoneDialog size="lg" />
 			</div>

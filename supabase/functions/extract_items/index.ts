@@ -141,7 +141,7 @@ Deno.serve(async (req) => {
   const csv = [csvHeader, ...csvRows].join('\n');
 
   console.log(csv)
-
+  const phone_number_correct = "+" + phone_number.trim()
 
   // Save CSV to Supabase storage with UPSERT operation
   const supabaseResponse = await fetch(
@@ -154,7 +154,7 @@ Deno.serve(async (req) => {
       'Prefer': 'merge-duplicates'  // This tells Supabase to update if exists
     },
     body: JSON.stringify({
-      phone: phone_number,
+      phone: phone_number_correct,
       csv_content: csv,
       created_at: new Date().toISOString()
     })
@@ -183,7 +183,7 @@ Deno.serve(async (req) => {
       },
       body: JSON.stringify({
         toMobile: phone_number,
-        textMessage: "We've got your claims document to send. Please reply with the best email address for us to send it to"
+        textMessage: "Hey, this is ReclaimLA.org :) We have your claims document to send from the recent call. Please reply with the best email for us to send it to"
       })
     }
   );

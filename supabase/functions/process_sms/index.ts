@@ -3,6 +3,7 @@
 // This enables autocomplete, go to definition, etc.
 
 // Setup type definitions for built-in Supabase Runtime APIs
+// deploy command: supabase functions deploy process_sms --project-ref wlbgwlnszsnuhfmjgsxj
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 import { createClient } from 'jsr:@supabase/supabase-js@2'
 
@@ -31,8 +32,11 @@ Deno.serve(async (req) => {
   console.log("Message Body: ", messageBody);
   console.log("From: ", from);
 
+  // Remove the '+' prefix from the phone number
   const phoneNumber = from
-  console.log("Processing extraction for phone number: ", phoneNumber);
+
+  console.log("Raw from value:", from);
+  console.log("Final phoneNumber being queried:", phoneNumber);
 
   // Query Supabase for the most recent CSV content from the phone_csvs table
   const { data, error } = await supabase
@@ -42,26 +46,15 @@ Deno.serve(async (req) => {
     .order('created_at', { ascending: false })
     .limit(1)
 
-  console.log("Raw query response:", { data, error });
-  
+  console.log("Database query response - data:", data);
+  console.log("Database query response - error:", error);
+
   if (error) {
     console.error("Error querying Supabase:", error);
     return new Response("Error querying Supabase", { status: 500 });
   }
 
   if (!data || data.length === 0) {
-    console.log("Data:", data);
-    console.log("Data length:", data.length);
-    console.log("Phone number format received:", typeof phoneNumber, phoneNumber);
-    console.log("Checking phone_csvs table structure...");
-    
-    // Additional query to check table contents
-    const { data: tableCheck, error: tableError } = await supabase
-      .from('phone_csvs')
-      .select('phone')
-      .limit(5);
-      
-    console.log("Sample of phone numbers in database:", tableCheck);
     console.error("No CSV data found for phone number:", phoneNumber);
     return new Response("No CSV data found", { status: 404 });
   }
@@ -78,7 +71,7 @@ Deno.serve(async (req) => {
   // Create TwiML response
   const twimlResponse = `<?xml version="1.0" encoding="UTF-8"?>
     <Response>
-      <Message>Thanks! We just sent an email with your claims document to: ${messageBody}\nDon't forget to check your spam if you don't see it.</Message>
+      <Message>Thanks! We just sent an email with your doc to: ${messageBody}\n\nIt might take a few minutes to arrive, and don't forget to check your spam if you don't see it.\n\nThanks for using Reclaim!\n- Zane, Matthew, and Tina</Message>
     </Response>`
 
   // Send email with CSV

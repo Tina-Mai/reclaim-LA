@@ -1,5 +1,7 @@
 # Reclaim LA
 
+We built Reclaim to make the process of remembering and cataloging loss belongings for insurance claims after the LA wildfires faster and simpler with an AI phone agent. More details: [ReclaimLA.org](https://reclaimla.org)
+
 ## Getting Started
 
 First, run the development server:
