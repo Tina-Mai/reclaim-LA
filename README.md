@@ -4,7 +4,13 @@ We built Reclaim to make the process of remembering and cataloging loss belongin
 
 ## Getting Started
 
-First, run the development server:
+Install requirements:
+
+```bash
+npm install
+```
+
+Run the development server:
 
 ```bash
 npm run dev
