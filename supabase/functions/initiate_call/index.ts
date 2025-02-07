@@ -50,9 +50,8 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         phone_number,
-        pathway_id: PATHWAY_ID, // Specific pathway ID for the AI conversation
-        // Define webhook URL that will receive call transcript
-        // {call_id} is a placeholder that Bland AI will replace with the actual call ID
+        pathway_id: PATHWAY_ID,
+        voice: "070f5aba-ce9d-4a15-ab68-5330695ed1d6",
         webhook: `https://wlbgwlnszsnuhfmjgsxj.supabase.co/functions/v1/send_transcript?call_id={call_id}&phone_number=${phone_number}`
       })
     });
