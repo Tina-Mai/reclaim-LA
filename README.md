@@ -39,7 +39,7 @@ Reclaim LA is a platform designed to help Los Angeles residents who lost their h
 - Mobile-first design for accessibility
 - Email delivery of completed inventory lists
 
-## Team & Responsibilities
+## Team & Responsibilities (Sprint 1)
 
 ### Zane
 - Twilio Setup
@@ -71,3 +71,26 @@ Reclaim LA is a platform designed to help Los Angeles residents who lost their h
 - Convesrational pathway adjustments
 - Axios Interview
 - Testing and bug fixes
+
+## Team & Responsibilities (Sprint 2) - Big focus on conversational pathway, market research, and media outreach
+
+### Zane
+- Implemented advanced AI features for better item recognition, ensuring accurate interpretation and cataloging of items mentioned by users.
+- Conducted user feedback sessions to gather insights, which informed adjustments to the prompts, making them more intuitive and user-friendly.
+- Continued testing and bug fixes
+- Media and outreach for the project
+
+### Matthew
+- Expanded user research to include feedback from insurance companies, refining AI prompts to align with industry standards for inventory documentation.
+- Developed new conversational pathways based on user feedback, ensuring the AI could handle a wider range of scenarios and user needs.
+- Added context for people asking about what the project is about, and how it works
+- Continued testing and bug fixes
+- Media and outreach for the project
+
+### Tina
+- Updated website to make it easier to access the call and understand the outcome
+- Updated copywriting to ensure AI prompts were empathetic and supportive, reflecting the project's mission to assist those affected by the wildfires.
+- Added further context for questions about the project
+- Managed GitHub issues and pull requests, overseeing the project's repository to ensure smooth implementation of changes to prompts and pathways.
+- Continued testing and bug fixes
+- Media and outreach for the project
