@@ -1,0 +1,19 @@
+{
+  "name": "zu-lm",
+  "type": "module",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "dev": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/groq": "latest",
+    "@ai-sdk/openai": "^1.1.11",
+    "ai": "^4.1.40",
+    "dotenv": "latest",
+    "elevenlabs": "^1.51.0",
+    "lumaai": "^1.4.0",
+    "node-fetch": "^3.3.2",
+    "tailwindcss-animate": "^1.0.7"
+  }
+}

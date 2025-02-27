@@ -1,0 +1,29 @@
+[package]
+name = "researcher"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "researcher"
+path = "src/main.rs"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+langchain = "0.2.2"
+tokio = { version = "1.0", features = ["full", "net"] }
+async-trait = "0.1"
+anyhow = "1.0"
+dotenv = "0.15"
+reqwest = { version = "0.11", features = ["json"] }
+thiserror = "1.0"
+tracing = "0.1"
+url = "2.5"
+enum-as-inner = "0.6"
+ollama-rs = "0.1"  # For Ollama integration
+axum = { version = "0.7", features = ["json", "macros"] }
+tower-http = { version = "0.5", features = ["cors", "fs"] }
+futures = "0.3"
+tokio-stream = "0.1"
+async-stream = "0.3"
+http = "1.0" 
