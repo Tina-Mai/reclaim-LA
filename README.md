@@ -1,6 +1,6 @@
 # ZU-LM
 
-A research-driven podcast generator that creates engaging conversations about any topic.
+A research-driven podcast generator that creates engaging conversations about any topic. We've organized the code into an overall project with some subparts. After going throught his ReadMe, you will want to open the ReadMe file located in the zu-chat folder.
 
 ## Environment Setup
 
