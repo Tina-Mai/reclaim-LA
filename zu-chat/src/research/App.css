@@ -1,0 +1,16 @@
+h1 {
+  @apply scroll-m-20 text-4xl font-extrabold;
+}
+
+h2 {
+  @apply scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0;
+}
+
+h3 {
+  @apply scroll-m-20 text-xl font-semibold tracking-tight;
+}
+
+/* Add background color to entire page */
+body {
+  @apply bg-gray-50;
+}
