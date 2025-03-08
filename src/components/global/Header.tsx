@@ -6,6 +6,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import PhoneDialog from "@/components/home/PhoneDialog";
 import AboutDialog from "@/components/about/AboutDialog";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 interface MobileMenuItemProps {
 	href: string;
@@ -72,7 +74,10 @@ const Header = () => {
 					<Link href="mailto:team@reclaim.org?subject=ReclaimLA.org" className="hover:opacity-70 transition-opacity duration-300">
 						Contact
 					</Link>
-					<PhoneDialog />
+					<PhoneDialog className="hover:opacity-70 transition-opacity duration-300" />
+					<Link href="/signin" className={cn(buttonVariants(), "cursor-pointer")}>
+						Sign in
+					</Link>
 				</div>
 
 				{/* Mobile Menu Button */}
@@ -116,7 +121,12 @@ const Header = () => {
 							<MobileMenuItem href="mailto:team@reclaim.org?subject=ReclaimLA.org" index={1}>
 								Contact
 							</MobileMenuItem>
-							<PhoneDialog />
+							<MobileMenuItem href="#" index={2}>
+								<PhoneDialog className="block w-full p-1 hover:bg-zinc-100 rounded-lg text-center" />
+							</MobileMenuItem>
+							<MobileMenuItem href="/signin" index={3}>
+								Sign in
+							</MobileMenuItem>
 						</nav>
 					</motion.div>
 				)}
