@@ -28,9 +28,26 @@ Deno.serve(async (req) => {
   // Extract SMS details from the form data
   const messageBody = formData.get('Body')
   const from = formData.get('From')
+  const numMedia = formData.get('NumMedia')
+  const messageSid = formData.get('MessageSid')
 
   console.log("Message Body: ", messageBody);
   console.log("From: ", from);
+  console.log("Number of Media Items: ", numMedia);
+
+  // Check if there are any media items in the request
+  if (numMedia && parseInt(numMedia.toString()) > 0) {
+    console.log("Media items detected in the request");
+    
+    // Log each media URL
+    for (let i = 0; i < parseInt(numMedia.toString()); i++) {
+      const mediaUrl = formData.get(`MediaUrl${i}`);
+      const contentType = formData.get(`MediaContentType${i}`);
+      
+      console.log(`Media ${i} URL: ${mediaUrl}`);
+      console.log(`Media ${i} Content Type: ${contentType}`);
+    }
+  }
 
   // Remove the '+' prefix from the phone number
   const phoneNumber = from
@@ -96,6 +113,7 @@ Deno.serve(async (req) => {
     }
   })
 })
+
 
 /* To invoke locally:
 
