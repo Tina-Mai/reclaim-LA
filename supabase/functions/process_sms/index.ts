@@ -35,6 +35,12 @@ Deno.serve(async (req) => {
   console.log("From: ", from);
   console.log("Number of Media Items: ", numMedia);
 
+  // Remove the '+' prefix from the phone number
+  const phoneNumber = from
+
+  console.log("Raw from value:", from);
+  console.log("Final phoneNumber being queried:", phoneNumber);
+
   // Check if there are any media items in the request
   if (numMedia && parseInt(numMedia.toString()) > 0) {
     console.log("Media items detected in the request");
@@ -46,14 +52,26 @@ Deno.serve(async (req) => {
       
       console.log(`Media ${i} URL: ${mediaUrl}`);
       console.log(`Media ${i} Content Type: ${contentType}`);
+
+      // Insert the media URL into the item_images table
+      if (mediaUrl) {
+        const { data: insertData, error: insertError } = await supabase
+          .from('item_images')
+          .insert({
+            url: mediaUrl.toString(),
+            phone_num: from?.toString()
+          });
+        
+        if (insertError) {
+          console.error(`Error inserting media URL ${i} into item_images:`, insertError);
+        } else {
+          console.log(`Successfully inserted media URL ${i} into item_images`);
+        }
+      }
     }
   }
 
-  // Remove the '+' prefix from the phone number
-  const phoneNumber = from
 
-  console.log("Raw from value:", from);
-  console.log("Final phoneNumber being queried:", phoneNumber);
 
   // Query Supabase for the most recent CSV content from the phone_csvs table
   const { data, error } = await supabase
