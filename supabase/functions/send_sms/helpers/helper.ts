@@ -1,5 +1,5 @@
 import * as base64 from "https://denopkg.com/chiefbiiko/base64/mod.ts";
-import { Sms } from "../types/interface";
+import { Sms } from "../types/interface.ts";
 
 interface TwilioResponse {
   sid: string;
