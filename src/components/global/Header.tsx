@@ -75,8 +75,8 @@ const Header = () => {
 						Contact
 					</Link>
 					<PhoneDialog className="hover:opacity-70 transition-opacity duration-300" />
-					<Link href="/signin" className={cn(buttonVariants(), "cursor-pointer")}>
-						Sign in
+					<Link href="/login" className={cn(buttonVariants(), "cursor-pointer")}>
+						Log in
 					</Link>
 				</div>
 
@@ -124,8 +124,8 @@ const Header = () => {
 							<MobileMenuItem href="#" index={2}>
 								<PhoneDialog className="block w-full p-1 hover:bg-zinc-100 rounded-lg text-center" />
 							</MobileMenuItem>
-							<MobileMenuItem href="/signin" index={3}>
-								Sign in
+							<MobileMenuItem href="/login" index={3}>
+								Log in
 							</MobileMenuItem>
 						</nav>
 					</motion.div>

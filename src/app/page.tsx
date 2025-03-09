@@ -38,7 +38,7 @@ export default function Home() {
 
 				<Visual />
 
-				<PhoneDialog size="lg" />
+				<PhoneDialog type="button" />
 			</div>
 			<Footer />
 		</main>

@@ -1,12 +1,19 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import PhoneInput from "@/components/home/PhoneInput";
 import Visual from "@/components/global/Visual";
+import { Button } from "@/components/ui/button";
 
-const PhoneDialog = ({ className }: { className?: string }) => {
+const PhoneDialog = ({ className, type = "link" }: { className?: string; type?: "link" | "button" }) => {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<div className={`${className} cursor-pointer`}>Get Started</div>
+				{type === "link" ? (
+					<div className={`${className} cursor-pointer`}>Get Started</div>
+				) : (
+					<Button className={`${className} cursor-pointer`} size="lg">
+						Get Started
+					</Button>
+				)}
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader className="vertical gap-3 pb-3">
