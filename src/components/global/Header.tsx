@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import Logo from "@/components/global/Logo";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import PhoneDialog from "@/components/home/PhoneDialog";
 import AboutDialog from "@/components/about/AboutDialog";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import FullLogo from "@/components/global/LogoFull";
 
 interface MobileMenuItemProps {
 	href: string;
@@ -63,10 +63,7 @@ const Header = () => {
 				transition={{ duration: 0.4 }}
 				className="horizontal place-self-center justify-between items-center p-2 bg-white/80 backdrop-blur-md rounded-xl shadow-md w-full max-w-screen-sm"
 			>
-				<Link href="/" className="horizontal items-center gap-3 px-3 hover:opacity-70 transition-opacity duration-300">
-					<Logo />
-					<div className="text-2xl font-serif font-medium">ReclaimLA.org</div>
-				</Link>
+				<FullLogo />
 
 				{/* Desktop Navigation */}
 				<div className="hidden sm:flex horizontal gap-5 text-zinc-500 font-medium items-center text-sm">
