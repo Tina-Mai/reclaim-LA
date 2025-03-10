@@ -112,7 +112,7 @@ const Dashboard = () => {
 					{/* User phone number */}
 					<div className="flex items-center px-3 py-2 gap-3 font-semibold border border-zinc-200 rounded-lg my-5 text-sm">
 						<User className="size-8 p-1.5 rounded bg-theme-orange/30 items-center justify-center" strokeWidth={1.5} />
-						{userData.phone}
+						{userData.phone.replace(/(\+1)(\d{3})(\d{3})(\d{4})/, "$1 ($2) $3-$4")}
 					</div>
 
 					{/* Search */}
