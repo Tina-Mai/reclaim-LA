@@ -186,38 +186,38 @@ const Dashboard = () => {
 					</div>
 
 					{/* Inventory table */}
-					<div className="bg-white rounded-lg border">
+					<div className="bg-white rounded-lg border overflow-x-auto">
 						<table className="min-w-full divide-y divide-zinc-200">
 							<thead>
 								<tr>
-									<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
+									<th className="w-12 px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
 										<input type="checkbox" className="rounded border-zinc-300" />
 									</th>
-									<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Item Name</th>
-									<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Room</th>
-									<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Brand</th>
-									<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Color</th>
-									<th className="px-6 py-3 text-right text-xs font-medium text-zinc-500 uppercase tracking-wider">Value</th>
+									<th className="w-1/3 px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Item Name</th>
+									<th className="w-1/6 px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Room</th>
+									<th className="w-1/6 px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Brand</th>
+									<th className="w-1/6 px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Color</th>
+									<th className="w-1/6 px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Value</th>
 								</tr>
 							</thead>
 							<tbody className="bg-white divide-y divide-zinc-200">
 								{inventoryItems.map((item, index) => (
 									<tr key={index}>
-										<td className="px-6 py-4 whitespace-nowrap">
+										<td className="px-6 py-4">
 											<input type="checkbox" className="rounded border-zinc-300" />
 										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
+										<td className="px-6 py-4">
 											<div className="flex items-center">
 												<div className="ml-0">
-													<div className="text-sm font-medium text-zinc-900">{item.itemName}</div>
-													{item.description && <div className="text-sm text-zinc-500">{item.description}</div>}
+													<div className="text-sm font-medium text-zinc-900 break-words">{item.itemName}</div>
+													{item.description && <div className="text-sm text-zinc-500 break-words">{item.description}</div>}
 												</div>
 											</div>
 										</td>
-										<td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500">{item.room}</td>
-										<td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500">{item.brand}</td>
-										<td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500">{item.color}</td>
-										<td className="px-6 py-4 whitespace-nowrap text-right text-sm text-zinc-900">${item.price.toFixed(2)}</td>
+										<td className="px-6 py-4 text-sm text-zinc-500 break-words">{item.room}</td>
+										<td className="px-6 py-4 text-sm text-zinc-500 break-words">{item.brand}</td>
+										<td className="px-6 py-4 text-sm text-zinc-500 break-words">{item.color}</td>
+										<td className="px-6 py-4 text-sm text-zinc-900">${item.price.toFixed(2)}</td>
 									</tr>
 								))}
 							</tbody>
