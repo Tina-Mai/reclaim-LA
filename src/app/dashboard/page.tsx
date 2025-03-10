@@ -181,7 +181,7 @@ const Dashboard = () => {
 						</div>
 						<Button className="gap-2">
 							<Download className="size-4" />
-							Export CSV
+							Download
 						</Button>
 					</div>
 

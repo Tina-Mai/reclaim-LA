@@ -43,8 +43,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
 				throw searchError;
 			}
 
-			// Now try the exact query we want
-			const { data, error } = await supabase.from("phone_csvs").select("*").eq("phone", phone).order("created_at", { ascending: false }).limit(1);
+			// Get all rows for this phone number, ordered by creation date
+			const { data, error } = await supabase.from("phone_csvs").select("*").eq("phone", phone).order("created_at", { ascending: false });
 
 			console.log("Query response:", {
 				data,
@@ -65,8 +65,23 @@ export function UserProvider({ children }: { children: ReactNode }) {
 			}
 
 			if (data && data.length > 0) {
-				const mostRecentData = data[0];
-				console.log("Found data:", {
+				// Combine CSV content from all rows, keeping the header only from the first row
+				const combinedCsvContent = data.reduce((acc, row, index) => {
+					if (!row.csv_content) return acc;
+
+					const lines = row.csv_content.split("\n");
+					// For the first row, include the header
+					if (index === 0) return lines.join("\n");
+					// For subsequent rows, skip the header
+					return acc + "\n" + lines.slice(1).join("\n");
+				}, "");
+
+				const mostRecentData = {
+					...data[0],
+					csv_content: combinedCsvContent,
+				};
+
+				console.log("Found combined data:", {
 					id: mostRecentData.id,
 					phone: mostRecentData.phone,
 					has_csv_content: Boolean(mostRecentData.csv_content),
@@ -78,7 +93,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
 				if (!mostRecentData.csv_content) {
 					console.warn("Found record but csv_content is empty");
-					// Don't set userData to null here, throw an error instead
 					throw new Error("CSV content is empty");
 				}
 
