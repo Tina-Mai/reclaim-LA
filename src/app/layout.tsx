@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { Manrope } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/context/AuthContext";
+import { UserProvider } from "@/context/UserContext";
 import "./globals.css";
 
 const manrope = Manrope({ subsets: ["latin"] });
@@ -100,11 +101,13 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${manrope.className} antialiased`}>
-				<AuthProvider>
-					<main>{children}</main>
-					<Toaster />
-					<Analytics />
-				</AuthProvider>
+				<UserProvider>
+					<AuthProvider>
+						<main>{children}</main>
+						<Toaster />
+						<Analytics />
+					</AuthProvider>
+				</UserProvider>
 			</body>
 		</html>
 	);

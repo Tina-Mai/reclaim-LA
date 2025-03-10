@@ -1,7 +1,8 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { useUser } from "./UserContext";
 
 type AuthStep = "phoneInput" | "sendingCode" | "codeInput" | "verifyingCode";
 
@@ -25,12 +26,54 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const DEMO_PHONE = "+19493105436";
+
 export function AuthProvider({ children }: { children: ReactNode }) {
 	const [user, setUser] = useState<User | null>(null);
 	const [authStep, setAuthStep] = useState<AuthStep>("phoneInput");
 	const [phoneNumber, setPhoneNumber] = useState("");
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
+	const { fetchUserData, clearUserData } = useUser();
+
+	// Initialize with demo user
+	useEffect(() => {
+		let mounted = true;
+		console.log("Starting demo user initialization");
+
+		const initializeDemoUser = async () => {
+			try {
+				console.log("Setting up demo user with phone:", DEMO_PHONE);
+				const demoUser: User = {
+					id: "demo-user-id",
+					phone: DEMO_PHONE,
+				};
+
+				if (mounted) {
+					setUser(demoUser);
+					console.log("Fetching data for demo user");
+					await fetchUserData(DEMO_PHONE);
+					console.log("Demo user data fetched successfully");
+				}
+			} catch (err) {
+				console.error("Error initializing demo user:", err);
+				if (mounted) {
+					setError(err instanceof Error ? err.message : "Failed to initialize demo user");
+				}
+			} finally {
+				if (mounted) {
+					console.log("Completing initialization, setting isLoading to false");
+					setIsLoading(false);
+				}
+			}
+		};
+
+		initializeDemoUser();
+
+		return () => {
+			mounted = false;
+		};
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const startPhoneVerification = async () => {
 		setIsLoading(true);
@@ -66,7 +109,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 			if (error) throw error;
 
-			setUser(data.user as User);
+			const userData = data.user as User;
+			setUser(userData);
+
+			// Fetch user data after successful authentication
+			await fetchUserData(phoneNumber);
+
 			// Reset states
 			setPhoneNumber("");
 			setAuthStep("phoneInput");
@@ -79,10 +127,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	};
 
 	const logout = async () => {
+		await supabase.auth.signOut();
 		setUser(null);
 		setAuthStep("phoneInput");
 		setPhoneNumber("");
 		setError(null);
+		clearUserData();
 	};
 
 	return (

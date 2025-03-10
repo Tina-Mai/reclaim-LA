@@ -1,10 +1,105 @@
+"use client";
+
 import { Search } from "lucide-react";
 import FullLogo from "@/components/global/LogoFull";
 import { Settings, HelpCircle, Home, History, PackageOpen, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PhoneDialog from "@/components/home/PhoneDialog";
+import { useUser } from "@/context/UserContext";
+import { useAuth } from "@/context/AuthContext";
+import { useEffect, useState } from "react";
+
+interface InventoryItem {
+	itemName: string;
+	price: number;
+	color: string;
+	brand: string;
+	room: string;
+	description: string;
+}
 
 const Dashboard = () => {
+	const { userData, isLoading: isUserDataLoading, error: userError } = useUser();
+	const { isLoading: isAuthLoading, error: authError } = useAuth();
+	const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
+
+	useEffect(() => {
+		console.log("\n--- Dashboard: CSV Processing Start ---");
+		console.log("userData received:", {
+			exists: Boolean(userData),
+			id: userData?.id,
+			phone: userData?.phone,
+			has_csv: Boolean(userData?.csv_content),
+			csv_length: userData?.csv_content?.length,
+		});
+
+		if (userData?.csv_content) {
+			try {
+				// Split the CSV content into lines
+				const lines = userData.csv_content.split("\n");
+				console.log("Raw CSV lines count:", lines.length);
+				console.log("First line (header):", lines[0]);
+				if (lines.length > 1) {
+					console.log("Sample data line:", lines[1]);
+				}
+
+				// Skip the header row and parse the data rows
+				const parsedItems = lines
+					.slice(1)
+					.map((line, index) => {
+						// Split by comma but respect quotes
+						const values = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
+						// Remove quotes and clean up values
+						const cleanValues = values.map((val) => val.replace(/^"|"$/g, "").trim());
+
+						console.log(`Line ${index + 1} values:`, cleanValues);
+
+						return {
+							itemName: cleanValues[0] || "",
+							price: parseFloat(cleanValues[1]) || 0,
+							color: cleanValues[2] || "",
+							brand: cleanValues[3] || "",
+							room: cleanValues[4] || "",
+							description: cleanValues[5] || "",
+						};
+					})
+					.filter((item) => item.itemName); // Filter out empty rows
+
+				console.log("Final parsed items:", parsedItems.length);
+				setInventoryItems(parsedItems);
+			} catch (error) {
+				console.error("CSV parsing error:", error);
+				console.error("Problematic CSV content:", userData.csv_content);
+				setInventoryItems([]);
+			}
+		} else {
+			console.log("No CSV content to process");
+			setInventoryItems([]);
+		}
+		console.log("--- Dashboard: CSV Processing End ---\n");
+	}, [userData]);
+
+	console.log("Dashboard: Render - Loading states:", { isUserDataLoading, isAuthLoading });
+	console.log("Dashboard: Render - Errors:", { userError, authError });
+	console.log("Dashboard: Render - Items count:", inventoryItems.length);
+
+	// Show loading state if either auth or user data is loading
+	if (isAuthLoading || isUserDataLoading) {
+		return <div className="flex h-screen items-center justify-center">Loading...</div>;
+	}
+
+	// Show error state if there are any errors
+	if (userError || authError) {
+		return <div className="flex h-screen items-center justify-center text-red-600">Error: {userError || authError}</div>;
+	}
+
+	// Show empty state if no user data is available
+	if (!userData) {
+		return <div className="flex h-screen items-center justify-center">No inventory data available</div>;
+	}
+
+	const totalValue = inventoryItems.reduce((sum, item) => sum + item.price, 0);
+
 	return (
 		<div className="flex h-screen">
 			{/* Sidebar */}
@@ -67,8 +162,8 @@ const Dashboard = () => {
 					{/* Tabs */}
 					<div className="border-b mb-6">
 						<div className="flex space-x-8">
-							<button className="px-1 py-4 text-sm font-medium text-zinc-900 border-b-2 border-zinc-900">All</button>
-							<button className="px-1 py-4 text-sm font-medium text-zinc-500 hover:text-zinc-700">Reimbursements</button>
+							<button className="px-1 py-4 text-sm font-medium text-zinc-900 border-b-2 border-zinc-900">All Items</button>
+							<button className="px-1 py-4 text-sm font-medium text-zinc-500 hover:text-zinc-700">By Room</button>
 						</div>
 					</div>
 
@@ -76,15 +171,15 @@ const Dashboard = () => {
 					<div className="flex items-center justify-between mb-6">
 						<div className="flex items-center w-96">
 							<Search className="size-4 text-zinc-400 absolute ml-3" />
-							<input type="text" placeholder="Search or add filter..." className="pl-10 pr-4 py-2 w-full border rounded-lg" />
+							<input type="text" placeholder="Search items..." className="pl-10 pr-4 py-2 w-full border rounded-lg" />
 						</div>
 						<Button className="gap-2">
 							<Download className="size-4" />
-							Download
+							Export CSV
 						</Button>
 					</div>
 
-					{/* Expenses table */}
+					{/* Inventory table */}
 					<div className="bg-white rounded-lg border">
 						<table className="min-w-full divide-y divide-zinc-200">
 							<thead>
@@ -92,41 +187,39 @@ const Dashboard = () => {
 									<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
 										<input type="checkbox" className="rounded border-zinc-300" />
 									</th>
-									<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Merchant</th>
-									<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Transaction date</th>
-									<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Payment type</th>
-									<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Status</th>
-									<th className="px-6 py-3 text-right text-xs font-medium text-zinc-500 uppercase tracking-wider">Amount</th>
+									<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Item Name</th>
+									<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Room</th>
+									<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Brand</th>
+									<th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Color</th>
+									<th className="px-6 py-3 text-right text-xs font-medium text-zinc-500 uppercase tracking-wider">Value</th>
 								</tr>
 							</thead>
 							<tbody className="bg-white divide-y divide-zinc-200">
-								<tr>
-									<td className="px-6 py-4 whitespace-nowrap">
-										<input type="checkbox" className="rounded border-zinc-300" />
-									</td>
-									<td className="px-6 py-4 whitespace-nowrap">
-										<div className="flex items-center">
-											<div className="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-800">AA</div>
-											<div className="ml-4">
-												<div className="text-sm font-medium text-zinc-900">American Airlines</div>
-												<div className="text-sm text-green-600">Paid</div>
+								{inventoryItems.map((item, index) => (
+									<tr key={index}>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<input type="checkbox" className="rounded border-zinc-300" />
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											<div className="flex items-center">
+												<div className="ml-0">
+													<div className="text-sm font-medium text-zinc-900">{item.itemName}</div>
+													{item.description && <div className="text-sm text-zinc-500">{item.description}</div>}
+												</div>
 											</div>
-										</div>
-									</td>
-									<td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500">Nov 9, 2024</td>
-									<td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500">Reimbursement</td>
-									<td className="px-6 py-4 whitespace-nowrap">
-										<div>
-											<div className="text-sm text-green-600">Paid</div>
-											<div className="text-xs text-zinc-500">Tina&apos;s account x-2863</div>
-										</div>
-									</td>
-									<td className="px-6 py-4 whitespace-nowrap text-right text-sm text-zinc-900">$294.52</td>
-								</tr>
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500">{item.room}</td>
+										<td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500">{item.brand}</td>
+										<td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500">{item.color}</td>
+										<td className="px-6 py-4 whitespace-nowrap text-right text-sm text-zinc-900">${item.price.toFixed(2)}</td>
+									</tr>
+								))}
 							</tbody>
 						</table>
 						<div className="px-6 py-4 border-t">
-							<div className="text-sm text-zinc-700">1&ndash;2 of 2 items &middot; $542.47</div>
+							<div className="text-sm text-zinc-700">
+								{inventoryItems.length} items · Total Value: ${totalValue.toFixed(2)}
+							</div>
 						</div>
 					</div>
 				</div>
