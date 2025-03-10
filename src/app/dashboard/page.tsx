@@ -24,35 +24,19 @@ const Dashboard = () => {
 	const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
 
 	useEffect(() => {
-		console.log("\n--- Dashboard: CSV Processing Start ---");
-		console.log("userData received:", {
-			exists: Boolean(userData),
-			id: userData?.id,
-			phone: userData?.phone,
-			has_csv: Boolean(userData?.csv_content),
-			csv_length: userData?.csv_content?.length,
-		});
-
 		if (userData?.csv_content) {
 			try {
 				// Split the CSV content into lines
 				const lines = userData.csv_content.split("\n");
-				console.log("Raw CSV lines count:", lines.length);
-				console.log("First line (header):", lines[0]);
-				if (lines.length > 1) {
-					console.log("Sample data line:", lines[1]);
-				}
 
 				// Skip the header row and parse the data rows
 				const parsedItems = lines
 					.slice(1)
-					.map((line, index) => {
+					.map((line) => {
 						// Split by comma but respect quotes
 						const values = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
 						// Remove quotes and clean up values
 						const cleanValues = values.map((val) => val.replace(/^"|"$/g, "").trim());
-
-						console.log(`Line ${index + 1} values:`, cleanValues);
 
 						return {
 							itemName: cleanValues[0] || "",
@@ -65,18 +49,14 @@ const Dashboard = () => {
 					})
 					.filter((item) => item.itemName); // Filter out empty rows
 
-				console.log("Final parsed items:", parsedItems.length);
 				setInventoryItems(parsedItems);
 			} catch (error) {
 				console.error("CSV parsing error:", error);
-				console.error("Problematic CSV content:", userData.csv_content);
 				setInventoryItems([]);
 			}
 		} else {
-			console.log("No CSV content to process");
 			setInventoryItems([]);
 		}
-		console.log("--- Dashboard: CSV Processing End ---\n");
 	}, [userData]);
 
 	console.log("Dashboard: Render - Loading states:", { isUserDataLoading, isAuthLoading });
@@ -135,10 +115,10 @@ const Dashboard = () => {
 
 					{/* Navigation */}
 					<nav className="vertical gap-1 text-sm">
-						<a href="#" className="flex items-center px-3 py-2 text-zinc-600 bg-zinc-100 rounded-lg gap-2">
+						{/* <a href="#" className="flex items-center px-3 py-2 text-zinc-600 bg-zinc-100 rounded-lg gap-2">
 							<Home className="size-4 text-zinc-500" />
 							Home
-						</a>
+						</a> */}
 						<a href="#" className="flex items-center px-3 py-2 text-zinc-600 hover:bg-zinc-100 rounded-lg gap-2">
 							<PackageOpen className="size-4 text-zinc-500" />
 							Inventory
@@ -171,7 +151,7 @@ const Dashboard = () => {
 			{/* Main content */}
 			<main className="flex-1 overflow-auto">
 				<div className="p-8">
-					<h1 className="text-3xl font-semibold mb-6">Dashboard</h1>
+					<h1 className="text-3xl font-semibold mb-6">Inventory</h1>
 
 					{/* Tabs */}
 					<div className="border-b mb-6">
@@ -209,8 +189,8 @@ const Dashboard = () => {
 								</tr>
 							</thead>
 							<tbody className="bg-white divide-y divide-zinc-200">
-								{sortedItems.map((item, index) => (
-									<tr key={index}>
+								{sortedItems.map((item) => (
+									<tr key={item.itemName}>
 										<td className="px-6 py-4">
 											<input type="checkbox" className="rounded border-zinc-300" />
 										</td>

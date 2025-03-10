@@ -10,8 +10,15 @@ interface UserData {
 	created_at: string;
 }
 
+interface CallHistoryItem {
+	id: number;
+	phone: string;
+	created_at: string;
+}
+
 interface UserContextType {
 	userData: UserData | null;
+	callHistory: CallHistoryItem[];
 	isLoading: boolean;
 	error: string | null;
 	fetchUserData: (phone: string) => Promise<void>;
@@ -22,6 +29,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: ReactNode }) {
 	const [userData, setUserData] = useState<UserData | null>(null);
+	const [callHistory, setCallHistory] = useState<CallHistoryItem[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
@@ -65,6 +73,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
 			}
 
 			if (data && data.length > 0) {
+				// Store call history
+				setCallHistory(
+					data.map((item) => ({
+						id: item.id,
+						phone: item.phone,
+						created_at: item.created_at,
+					}))
+				);
+
 				// Combine CSV content from all rows, keeping the header only from the first row
 				const combinedCsvContent = data.reduce((acc, row, index) => {
 					if (!row.csv_content) return acc;
@@ -118,6 +135,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 	const clearUserData = () => {
 		console.log("UserContext: Clearing user data");
 		setUserData(null);
+		setCallHistory([]);
 		setError(null);
 	};
 
@@ -125,6 +143,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 		<UserContext.Provider
 			value={{
 				userData,
+				callHistory,
 				isLoading,
 				error,
 				fetchUserData,

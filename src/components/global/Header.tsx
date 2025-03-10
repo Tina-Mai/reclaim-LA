@@ -68,7 +68,7 @@ const Header = () => {
 				{/* Desktop Navigation */}
 				<div className="hidden sm:flex horizontal gap-5 text-zinc-500 font-medium items-center text-sm">
 					<AboutDialog />
-					<Link href="mailto:team@reclaim.org?subject=ReclaimLA.org" className="hover:opacity-70 transition-opacity duration-300">
+					<Link href="mailto:team@reclaimLA.org?subject=ReclaimLA.org" className="hover:opacity-70 transition-opacity duration-300">
 						Contact
 					</Link>
 					<PhoneDialog className="hover:opacity-70 transition-opacity duration-300" />
@@ -115,7 +115,7 @@ const Header = () => {
 							<MobileMenuItem href="#" index={0}>
 								<AboutDialog className="block w-full p-1 hover:bg-zinc-100 rounded-lg text-center" />
 							</MobileMenuItem>
-							<MobileMenuItem href="mailto:team@reclaim.org?subject=ReclaimLA.org" index={1}>
+							<MobileMenuItem href="mailto:team@reclaimLA.org?subject=ReclaimLA.org" index={1}>
 								Contact
 							</MobileMenuItem>
 							<MobileMenuItem href="#" index={2}>
