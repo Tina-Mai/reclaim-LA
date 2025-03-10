@@ -19,6 +19,10 @@ export default {
                 serif: ["Instrument Serif", "serif"],
             },
             keyframes: {
+                "caret-blink": {
+                    "0%,70%,100%": { opacity: "1" },
+                    "20%,50%": { opacity: "0" },
+                },
                 flowLine: {
                     '0%': { opacity: '0.3' },
                     '50%': { opacity: '1' },
@@ -59,7 +63,8 @@ export default {
                 'flow-arrow-vertical': 'flowArrowVertical 2s ease-in-out infinite',
                 'fade-in': 'fadeIn 0.5s ease-out forwards',
                 'fade-in-delayed': 'fadeIn 0.5s ease-out 0.3s forwards',
-                'shine': 'shine 2s ease-in-out infinite'
+                'shine': 'shine 2s ease-in-out infinite',
+                "caret-blink": "caret-blink 1.25s ease-out infinite",
             }
         },
     },

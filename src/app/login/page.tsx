@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import Logo from "@/components/global/Logo";
 import PhoneLogin from "@/components/login/PhoneLogin";
+import VerificationInput from "@/components/login/VerificationInput";
 
 function Login() {
 	return (
@@ -18,6 +19,7 @@ function Login() {
 					<div className="text-zinc-500 text-center">Use your Reclaim dashboard to see your call history, access additional tools, manage your account, and more.</div>
 				</div>
 				<PhoneLogin />
+				<VerificationInput />
 			</div>
 			<div className="horizontal text-sm text-zinc-500 text-center items-center gap-3">
 				<Link href="/privacy">Privacy Policy</Link>
