@@ -98,7 +98,7 @@ const Dashboard = () => {
 		return <div className="flex h-screen items-center justify-center">No inventory data available</div>;
 	}
 
-	const totalValue = inventoryItems.reduce((sum, item) => sum + item.price, 0);
+	const totalValue = inventoryItems.reduce((sum, item) => sum + (item.price === -1 ? 0 : item.price), 0);
 
 	return (
 		<div className="flex h-screen">
@@ -217,7 +217,7 @@ const Dashboard = () => {
 										<td className="px-6 py-4 text-sm text-zinc-500 break-words">{item.room}</td>
 										<td className="px-6 py-4 text-sm text-zinc-500 break-words">{item.brand}</td>
 										<td className="px-6 py-4 text-sm text-zinc-500 break-words">{item.color}</td>
-										<td className="px-6 py-4 text-sm text-zinc-900">${item.price.toFixed(2)}</td>
+										<td className="px-6 py-4 text-sm text-zinc-900">{item.price === -1 ? "N/A" : `$${item.price.toFixed(2)}`}</td>
 									</tr>
 								))}
 							</tbody>
