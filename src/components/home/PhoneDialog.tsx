@@ -3,15 +3,29 @@ import PhoneInput from "@/components/home/PhoneInput";
 import Visual from "@/components/global/Visual";
 import { Button } from "@/components/ui/button";
 
-const PhoneDialog = ({ className, type = "link" }: { className?: string; type?: "link" | "button" }) => {
+const PhoneDialog = ({
+	className,
+	type = "link",
+	size = "lg",
+	buttonText = "Get Started",
+	buttonVariant = "default",
+	buttonClassName,
+}: {
+	className?: string;
+	type?: "link" | "button";
+	size?: "lg" | "default";
+	buttonText?: string;
+	buttonVariant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+	buttonClassName?: string;
+}) => {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
 				{type === "link" ? (
 					<div className={`${className} cursor-pointer`}>Get Started</div>
 				) : (
-					<Button className={`${className} cursor-pointer`} size="lg">
-						Get Started
+					<Button className={`${className} cursor-pointer ${buttonClassName}`} size={size} variant={buttonVariant}>
+						{buttonText}
 					</Button>
 				)}
 			</DialogTrigger>

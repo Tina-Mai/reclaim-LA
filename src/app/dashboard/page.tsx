@@ -1,6 +1,8 @@
 import { Search } from "lucide-react";
 import FullLogo from "@/components/global/LogoFull";
-import { Settings, HelpCircle, Home, History, PackageOpen } from "lucide-react";
+import { Settings, HelpCircle, Home, History, PackageOpen, Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import PhoneDialog from "@/components/home/PhoneDialog";
 
 const Dashboard = () => {
 	return (
@@ -29,14 +31,17 @@ const Dashboard = () => {
 							Home
 						</a>
 						<a href="#" className="flex items-center px-3 py-2 text-zinc-600 hover:bg-zinc-100 rounded-lg gap-2">
-							<History className="size-4 text-zinc-500" />
-							Call History
-						</a>
-						<a href="#" className="flex items-center px-3 py-2 text-zinc-600 hover:bg-zinc-100 rounded-lg gap-2">
 							<PackageOpen className="size-4 text-zinc-500" />
 							Inventory
 						</a>
+						<a href="#" className="flex items-center px-3 py-2 text-zinc-600 hover:bg-zinc-100 rounded-lg gap-2">
+							<History className="size-4 text-zinc-500" />
+							Call History
+						</a>
 					</nav>
+					<div className="horizontal mt-8">
+						<PhoneDialog type="button" size="default" buttonText="Start a new call" buttonClassName="w-full" />
+					</div>
 				</div>
 
 				{/* Bottom sidebar items */}
@@ -57,7 +62,7 @@ const Dashboard = () => {
 			{/* Main content */}
 			<main className="flex-1 overflow-auto">
 				<div className="p-8">
-					<h1 className="text-3xl font-semibold mb-6">Expenses</h1>
+					<h1 className="text-3xl font-semibold mb-6">Dashboard</h1>
 
 					{/* Tabs */}
 					<div className="border-b mb-6">
@@ -70,23 +75,13 @@ const Dashboard = () => {
 					{/* Search and filters */}
 					<div className="flex items-center justify-between mb-6">
 						<div className="flex items-center w-96">
-							<Search className="h-4 w-4 text-zinc-400 absolute ml-3" />
+							<Search className="size-4 text-zinc-400 absolute ml-3" />
 							<input type="text" placeholder="Search or add filter..." className="pl-10 pr-4 py-2 w-full border rounded-lg" />
 						</div>
-						<div className="flex items-center space-x-2">
-							<button className="p-2 border rounded-lg">
-								<span className="sr-only">Calendar</span>
-								📅
-							</button>
-							<button className="p-2 border rounded-lg">
-								<span className="sr-only">Filter</span>
-								🔍
-							</button>
-							<button className="p-2 border rounded-lg">
-								<span className="sr-only">Download</span>
-								⬇️
-							</button>
-						</div>
+						<Button className="gap-2">
+							<Download className="size-4" />
+							Download
+						</Button>
 					</div>
 
 					{/* Expenses table */}
