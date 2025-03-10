@@ -48,6 +48,35 @@ const Inventory = ({ inventoryItems }: InventoryProps) => {
 		return b.price - a.price; // Sort in descending order
 	});
 
+	const downloadCSV = () => {
+		// Define CSV headers
+		const headers = ["Item Name", "Room", "Brand", "Color", "Value", "Description"];
+
+		// Convert items to CSV rows
+		const csvRows = sortedItems.map((item) => [
+			`"${item.itemName}"`,
+			`"${item.room}"`,
+			`"${item.brand}"`,
+			`"${item.color}"`,
+			item.price === -1 ? "N/A" : `$${item.price.toFixed(2)}`,
+			`"${item.description || ""}"`,
+		]);
+
+		// Combine headers and rows
+		const csvContent = [headers.join(","), ...csvRows.map((row) => row.join(","))].join("\n");
+
+		// Create and trigger download
+		const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+		const link = document.createElement("a");
+		const url = URL.createObjectURL(blob);
+		link.setAttribute("href", url);
+		link.setAttribute("download", `inventory-${new Date().toISOString().split("T")[0]}.csv`);
+		link.style.visibility = "hidden";
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	};
+
 	return (
 		<>
 			{/* Tabs */}
@@ -96,7 +125,7 @@ const Inventory = ({ inventoryItems }: InventoryProps) => {
 						</Select>
 					)}
 				</div>
-				<Button className="gap-2">
+				<Button className="gap-2" onClick={downloadCSV}>
 					<Download className="size-4" />
 					Download
 				</Button>
