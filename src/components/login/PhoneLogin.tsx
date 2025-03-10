@@ -55,7 +55,7 @@ const PhoneLogin = () => {
 	};
 
 	return (
-		<div className="horizontal items-center gap-2">
+		<div className="horizontal items-center justify-center gap-2">
 			<PhoneInput defaultCountry="US" placeholder="Phone number" value={phoneNumber} onChange={setPhoneNumber} disabled={isLoading || isSuccess} />
 			<motion.div whileHover="hover" initial="initial">
 				<Button className="hidden sm:flex" onClick={handleSubmit} disabled={isLoading || isSuccess} variant={isSuccess ? "secondary" : "default"}>

@@ -7,7 +7,7 @@ import PhoneLogin from "@/components/login/PhoneLogin";
 function Login() {
 	return (
 		<div className="vertical items-center justify-between h-screen p-10 relative">
-			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(252,160,109,0.5)_0%,transparent_50%)] -z-50" />
+			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(252,160,109,0.3)_0%,transparent_50%)] -z-50" />
 			<Link href="/" className="horizontal items-center gap-3 px-3 hover:opacity-70 transition-opacity duration-300">
 				<Logo />
 				<div className="text-2xl font-serif font-medium">ReclaimLA.org</div>
