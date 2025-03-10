@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { Manrope } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 
 const manrope = Manrope({ subsets: ["latin"] });
@@ -99,9 +100,11 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${manrope.className} antialiased`}>
-				<main>{children}</main>
-				<Toaster />
-				<Analytics />
+				<AuthProvider>
+					<main>{children}</main>
+					<Toaster />
+					<Analytics />
+				</AuthProvider>
 			</body>
 		</html>
 	);

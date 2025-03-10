@@ -1,71 +1,28 @@
 "use client";
 
-import { useState } from "react";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 import { Check, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useAuth } from "@/context/AuthContext";
 
 const PhoneLogin = () => {
-	const [phoneNumber, setPhoneNumber] = useState("");
-	const [isLoading, setIsLoading] = useState(false);
-	const [isSuccess, setIsSuccess] = useState(false);
+	const { phoneNumber, setPhoneNumber, startPhoneVerification, isLoading, authStep } = useAuth();
 
-	const handleSubmit = async () => {
-		if (!phoneNumber) {
-			toast.error("Phone number required", {
-				description: "Please enter your phone number to start a call.",
-			});
-			return;
-		}
-
-		setIsLoading(true);
-		try {
-			const response = await fetch("/api/startCall", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ phone_number: phoneNumber }),
-			});
-
-			if (!response.ok) {
-				throw new Error("Failed to start call");
-			}
-
-			setIsSuccess(true);
-			toast.success("Call sent ☎️", {
-				description: "You should be receiving a call from us shortly!",
-			});
-
-			// Reset success state after 3 seconds
-			setTimeout(() => {
-				setIsSuccess(false);
-				setPhoneNumber(""); // Clear the input for next use
-			}, 3000);
-		} catch (error) {
-			console.error("Error starting call:", error);
-			toast.success("Call sent ☎️", {
-				description: "You should be receiving a call from us shortly!",
-			});
-		} finally {
-			setIsLoading(false);
-		}
-	};
+	const isSuccess = authStep === "sendingCode" || authStep === "codeInput";
 
 	return (
 		<div className="horizontal items-center justify-center gap-2">
 			<PhoneInput defaultCountry="US" placeholder="Phone number" value={phoneNumber} onChange={setPhoneNumber} disabled={isLoading || isSuccess} />
 			<motion.div whileHover="hover" initial="initial">
-				<Button className="hidden sm:flex" onClick={handleSubmit} disabled={isLoading || isSuccess} variant={isSuccess ? "secondary" : "default"}>
+				<Button className="hidden sm:flex" onClick={startPhoneVerification} disabled={isLoading || isSuccess} variant={isSuccess ? "secondary" : "default"}>
 					{isSuccess ? (
 						<>
 							<Check className="mr-2 h-4 w-4" />
-							Call Sent
+							Sent code
 						</>
 					) : isLoading ? (
-						"Starting..."
+						"Sending code..."
 					) : (
 						<motion.div
 							className="horizontal items-center"
@@ -90,16 +47,16 @@ const PhoneLogin = () => {
 					)}
 				</Button>
 			</motion.div>
-			<Button className="flex sm:hidden min-w-24" onClick={handleSubmit} disabled={isLoading || isSuccess} variant={isSuccess ? "secondary" : "default"}>
+			<Button className="flex sm:hidden min-w-24" onClick={startPhoneVerification} disabled={isLoading || isSuccess} variant={isSuccess ? "secondary" : "default"}>
 				{isSuccess ? (
 					<>
 						<Check className="mr-2 h-4 w-4" />
 						Sent
 					</>
 				) : isLoading ? (
-					"Starting..."
+					"Sending code..."
 				) : (
-					"Start a call"
+					"Log in"
 				)}
 			</Button>
 		</div>
