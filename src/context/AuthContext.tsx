@@ -38,16 +38,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		setAuthStep("sendingCode");
 
 		try {
-			const response = await fetch("/api/startCall", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ phone_number: phoneNumber }),
+			const { error } = await supabase.auth.signInWithOtp({
+				phone: phoneNumber,
 			});
 
-			if (!response.ok) {
-				throw new Error("Failed to send verification code");
-			}
-
+			if (error) throw error;
 			setAuthStep("codeInput");
 		} catch (err) {
 			setError(err instanceof Error ? err.message : "Failed to send code");
@@ -63,13 +58,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		setAuthStep("verifyingCode");
 
 		try {
-			// Here you would verify the code with your backend
-			// and get the user data from Supabase
-			const { data, error } = await supabase.from("users").select("*").eq("phone", phoneNumber).single();
+			const { data, error } = await supabase.auth.verifyOtp({
+				phone: phoneNumber,
+				token: code,
+				type: "sms",
+			});
 
 			if (error) throw error;
 
-			setUser(data);
+			setUser(data.user as User);
 			// Reset states
 			setPhoneNumber("");
 			setAuthStep("phoneInput");
