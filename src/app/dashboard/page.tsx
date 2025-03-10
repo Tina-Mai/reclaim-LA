@@ -118,7 +118,7 @@ const Dashboard = () => {
 									<td className="px-6 py-4 whitespace-nowrap">
 										<div>
 											<div className="text-sm text-green-600">Paid</div>
-											<div className="text-xs text-zinc-500">Tina's account x-2863</div>
+											<div className="text-xs text-zinc-500">Tina&apos;s account x-2863</div>
 										</div>
 									</td>
 									<td className="px-6 py-4 whitespace-nowrap text-right text-sm text-zinc-900">$294.52</td>
