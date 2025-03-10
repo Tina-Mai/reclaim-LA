@@ -34,7 +34,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
 		try {
 			// First try to get all matching rows to see what's available
-			const { data: allMatches, error: searchError } = await supabase.from("phone_csvs").select("*").ilike("phone", "%19493105436%");
+			const { data: allMatches, error: searchError } = await supabase.from("phone_csvs").select("*").ilike("phone", `%${phone}%`);
 
 			console.log("All matching rows:", allMatches);
 
@@ -44,7 +44,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 			}
 
 			// Now try the exact query we want
-			const { data, error } = await supabase.from("phone_csvs").select("*").eq("phone", "+19493105436").order("created_at", { ascending: false }).limit(1);
+			const { data, error } = await supabase.from("phone_csvs").select("*").eq("phone", phone).order("created_at", { ascending: false }).limit(1);
 
 			console.log("Query response:", {
 				data,

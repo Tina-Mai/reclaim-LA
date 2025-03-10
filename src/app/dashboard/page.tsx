@@ -175,7 +175,7 @@ const Dashboard = () => {
 
 					{/* Search and filters */}
 					<div className="flex items-center justify-between mb-6">
-						<div className="flex items-center w-96">
+						<div className="relative flex items-center w-96">
 							<Search className="size-4 text-zinc-400 absolute ml-3" />
 							<input type="text" placeholder="Search items..." className="pl-10 pr-4 py-2 w-full border rounded-lg" />
 						</div>
