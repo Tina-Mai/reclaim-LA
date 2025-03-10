@@ -2,7 +2,7 @@
 
 import { Search } from "lucide-react";
 import FullLogo from "@/components/global/LogoFull";
-import { Settings, HelpCircle, Home, History, PackageOpen, Download } from "lucide-react";
+import { Settings, HelpCircle, Home, History, PackageOpen, Download, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PhoneDialog from "@/components/home/PhoneDialog";
 import { useUser } from "@/context/UserContext";
@@ -105,8 +105,14 @@ const Dashboard = () => {
 			{/* Sidebar */}
 			<aside className="w-64 bg-white border-r">
 				<div className="p-4">
-					<div className="flex items-center space-x-2 mb-8 mt-2">
+					<div className="flex items-center space-x-2 mt-2">
 						<FullLogo />
+					</div>
+
+					{/* User phone number */}
+					<div className="flex items-center px-3 py-2 gap-3 font-semibold border border-zinc-200 rounded-lg my-5 text-sm">
+						<User className="size-8 p-1.5 rounded bg-theme-orange/30 items-center justify-center" strokeWidth={1.5} />
+						{userData.phone}
 					</div>
 
 					{/* Search */}
