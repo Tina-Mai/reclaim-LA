@@ -1,5 +1,6 @@
 import { Search, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 interface InventoryItem {
 	itemName: string;
@@ -15,10 +16,23 @@ interface InventoryProps {
 }
 
 const Inventory = ({ inventoryItems }: InventoryProps) => {
+	const [searchTerm, setSearchTerm] = useState("");
 	const totalValue = inventoryItems.reduce((sum, item) => sum + (item.price === -1 ? 0 : item.price), 0);
 
+	// Filter items based on search term
+	const filteredItems = inventoryItems.filter((item) => {
+		const searchLower = searchTerm.toLowerCase();
+		return (
+			item.itemName.toLowerCase().includes(searchLower) ||
+			item.room.toLowerCase().includes(searchLower) ||
+			item.brand.toLowerCase().includes(searchLower) ||
+			item.color.toLowerCase().includes(searchLower) ||
+			(item.description && item.description.toLowerCase().includes(searchLower))
+		);
+	});
+
 	// Sort items by value (price)
-	const sortedItems = [...inventoryItems].sort((a, b) => {
+	const sortedItems = [...filteredItems].sort((a, b) => {
 		// Handle cases where price is -1 (N/A)
 		if (a.price === -1) return 1;
 		if (b.price === -1) return -1;
@@ -35,11 +49,17 @@ const Inventory = ({ inventoryItems }: InventoryProps) => {
 				</div>
 			</div>
 
-			{/* Search and filters */}
+			{/* Search and download */}
 			<div className="flex items-center justify-between mb-6">
-				<div className="relative flex items-center w-96">
+				<div className="relative flex items-center w-96 h-full">
 					<Search className="size-4 text-zinc-400 absolute ml-3" />
-					<input type="text" placeholder="Search items..." className="pl-10 pr-4 py-2 w-full border rounded-lg" />
+					<input
+						type="text"
+						placeholder="Search items..."
+						className="pl-10 pr-4 py-2.5 w-full border rounded-lg text-sm outline-none ring-0"
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+					/>
 				</div>
 				<Button className="gap-2">
 					<Download className="size-4" />
