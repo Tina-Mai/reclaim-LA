@@ -100,6 +100,14 @@ const Dashboard = () => {
 
 	const totalValue = inventoryItems.reduce((sum, item) => sum + (item.price === -1 ? 0 : item.price), 0);
 
+	// Sort items by value (price)
+	const sortedItems = [...inventoryItems].sort((a, b) => {
+		// Handle cases where price is -1 (N/A)
+		if (a.price === -1) return 1;
+		if (b.price === -1) return -1;
+		return b.price - a.price; // Sort in descending order
+	});
+
 	return (
 		<div className="flex h-screen">
 			{/* Sidebar */}
@@ -201,7 +209,7 @@ const Dashboard = () => {
 								</tr>
 							</thead>
 							<tbody className="bg-white divide-y divide-zinc-200">
-								{inventoryItems.map((item, index) => (
+								{sortedItems.map((item, index) => (
 									<tr key={index}>
 										<td className="px-6 py-4">
 											<input type="checkbox" className="rounded border-zinc-300" />
