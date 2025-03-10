@@ -1,6 +1,7 @@
 import { Search, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface InventoryItem {
 	itemName: string;
@@ -17,18 +18,26 @@ interface InventoryProps {
 
 const Inventory = ({ inventoryItems }: InventoryProps) => {
 	const [searchTerm, setSearchTerm] = useState("");
+	const [activeTab, setActiveTab] = useState<"all" | "room">("all");
+	const [selectedRoom, setSelectedRoom] = useState<string>(Array.from(new Set(inventoryItems.map((item) => item.room))).sort()[0] || "");
 	const totalValue = inventoryItems.reduce((sum, item) => sum + (item.price === -1 ? 0 : item.price), 0);
 
-	// Filter items based on search term
+	// Get unique rooms for the dropdown
+	const uniqueRooms = Array.from(new Set(inventoryItems.map((item) => item.room))).sort();
+
+	// Filter items based on search term and room selection
 	const filteredItems = inventoryItems.filter((item) => {
 		const searchLower = searchTerm.toLowerCase();
-		return (
+		const matchesSearch =
 			item.itemName.toLowerCase().includes(searchLower) ||
 			item.room.toLowerCase().includes(searchLower) ||
 			item.brand.toLowerCase().includes(searchLower) ||
 			item.color.toLowerCase().includes(searchLower) ||
-			(item.description && item.description.toLowerCase().includes(searchLower))
-		);
+			(item.description && item.description.toLowerCase().includes(searchLower));
+
+		const matchesRoom = activeTab === "all" || item.room === selectedRoom;
+
+		return matchesSearch && matchesRoom;
 	});
 
 	// Sort items by value (price)
@@ -44,22 +53,48 @@ const Inventory = ({ inventoryItems }: InventoryProps) => {
 			{/* Tabs */}
 			<div className="border-b mb-6">
 				<div className="flex space-x-8">
-					<button className="px-1 py-4 text-sm font-medium text-zinc-900 border-b-2 border-zinc-900">All Items</button>
-					<button className="px-1 py-4 text-sm font-medium text-zinc-500 hover:text-zinc-700">By Room</button>
+					<button
+						className={`px-1 py-4 text-sm font-medium border-b-2 ${activeTab === "all" ? "text-zinc-900 border-zinc-900" : "text-zinc-500 border-transparent hover:text-zinc-700"}`}
+						onClick={() => setActiveTab("all")}
+					>
+						All Items
+					</button>
+					<button
+						className={`px-1 py-4 text-sm font-medium border-b-2 ${activeTab === "room" ? "text-zinc-900 border-zinc-900" : "text-zinc-500 border-transparent hover:text-zinc-700"}`}
+						onClick={() => setActiveTab("room")}
+					>
+						By Room
+					</button>
 				</div>
 			</div>
 
-			{/* Search and download */}
+			{/* Search and filters */}
 			<div className="flex items-center justify-between mb-6">
-				<div className="relative flex items-center w-96 h-full">
-					<Search className="size-4 text-zinc-400 absolute ml-3" />
-					<input
-						type="text"
-						placeholder="Search items..."
-						className="pl-10 pr-4 py-2.5 w-full border rounded-lg text-sm outline-none ring-0"
-						value={searchTerm}
-						onChange={(e) => setSearchTerm(e.target.value)}
-					/>
+				<div className="flex items-center gap-4">
+					<div className="relative flex items-center w-96 h-full">
+						<Search className="size-4 text-zinc-400 absolute ml-3" />
+						<input
+							type="text"
+							placeholder="Search items..."
+							className="pl-10 pr-4 py-2.5 w-full border rounded-lg text-sm outline-none ring-0"
+							value={searchTerm}
+							onChange={(e) => setSearchTerm(e.target.value)}
+						/>
+					</div>
+					{activeTab === "room" && (
+						<Select value={selectedRoom} onValueChange={setSelectedRoom}>
+							<SelectTrigger className="w-[200px]">
+								<SelectValue placeholder="Select a room" />
+							</SelectTrigger>
+							<SelectContent>
+								{uniqueRooms.map((room) => (
+									<SelectItem key={room} value={room}>
+										{room}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+					)}
 				</div>
 				<Button className="gap-2">
 					<Download className="size-4" />
