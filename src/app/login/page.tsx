@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
 import { Suspense } from "react";
-import { Button } from "@/components/ui/button";
 import Logo from "@/components/global/Logo";
+import PhoneLogin from "@/components/login/PhoneLogin";
 
 function Login() {
 	return (
@@ -17,11 +17,7 @@ function Login() {
 					<h1 className="font-serif text-4xl text-center">Log in to Reclaim</h1>
 					<div className="text-zinc-500 text-center">Use your Reclaim dashboard to see your call history, access additional tools, manage your account, and more.</div>
 				</div>
-				<div className="vertical gap-[10px]">
-					<Button variant="outline" className="text-center justify-center h-[38px]">
-						Sign in with Google
-					</Button>
-				</div>
+				<PhoneLogin />
 			</div>
 			<div className="horizontal text-sm text-zinc-500 text-center items-center gap-3">
 				<Link href="/privacy">Privacy Policy</Link>
