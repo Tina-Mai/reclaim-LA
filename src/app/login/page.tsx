@@ -9,15 +9,23 @@ import FullLogo from "@/components/global/LogoFull";
 import { useUser } from "@/context/UserContext";
 
 function Login() {
-	const { authStep, session } = useAuth();
+	const { authStep, session, isLoading: isAuthLoading } = useAuth();
 	const { userData, isLoading: isUserDataLoading } = useUser();
 	const router = useRouter();
 
 	useEffect(() => {
-		if (session && userData && !isUserDataLoading) {
+		if (session && !isAuthLoading && !isUserDataLoading) {
 			router.push("/dashboard");
 		}
-	}, [session, userData, isUserDataLoading, router]);
+	}, [session, userData, isAuthLoading, isUserDataLoading, router]);
+
+	if (session && !isAuthLoading && !isUserDataLoading) {
+		return (
+			<div className="vertical items-center justify-center h-screen">
+				<div className="text-zinc-500">Redirecting to dashboard...</div>
+			</div>
+		);
+	}
 
 	const showVerification = authStep === "codeInput" || authStep === "verifyingCode";
 	const showPhoneInput = authStep === "phoneInput" || authStep === "sendingCode";

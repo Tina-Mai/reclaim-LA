@@ -57,41 +57,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
 			const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
 			console.log("Formatted phone number for query:", formattedPhone);
 
-			// First try to get all matching rows to see what's available
-			const { data: allMatches, error: searchError } = await supabase.from("phone_csvs").select("*").ilike("phone", `%${formattedPhone}%`);
-
-			console.log("All matching rows:", allMatches);
-			console.log("Search error if any:", searchError);
-			console.log("Current phone search:", {
-				searchPattern: `%${formattedPhone}%`,
-				hasMatches: !!allMatches?.length,
-				matchCount: allMatches?.length || 0,
-			});
-
-			if (searchError) {
-				console.error("Search error:", searchError);
-				throw searchError;
-			}
-
 			// Get all rows for this phone number, ordered by creation date
 			const { data, error } = await supabase.from("phone_csvs").select("*").eq("phone", formattedPhone).order("created_at", { ascending: false });
 
-			console.log("Query response:", {
-				data,
-				error,
-				errorMessage: error?.message,
-				errorCode: error?.code,
-				details: error?.details,
-				formattedPhone,
-			});
-
 			if (error) {
-				console.error("Detailed error:", {
-					message: error.message,
-					code: error.code,
-					details: error.details,
-					hint: error.hint,
-				});
+				console.error("Error fetching user data:", error);
 				throw error;
 			}
 
@@ -121,25 +91,17 @@ export function UserProvider({ children }: { children: ReactNode }) {
 					csv_content: combinedCsvContent,
 				};
 
-				console.log("Found combined data:", {
-					id: mostRecentData.id,
-					phone: mostRecentData.phone,
-					has_csv_content: Boolean(mostRecentData.csv_content),
-					csv_length: mostRecentData.csv_content?.length,
-					created_at: mostRecentData.created_at,
-					first_line: mostRecentData.csv_content?.split("\n")[0],
-				});
-
-				if (!mostRecentData.csv_content) {
-					console.warn("Found record but csv_content is empty");
-					throw new Error("CSV content is empty");
-				}
-
 				setUserData(mostRecentData);
 				console.log("UserData state updated successfully");
 			} else {
-				console.log("No data found");
-				setUserData(null);
+				// This is a new user - set minimal user data
+				console.log("No existing data found - new user");
+				setUserData({
+					id: 0, // Placeholder ID for new user
+					phone: formattedPhone,
+					csv_content: "",
+					created_at: new Date().toISOString(),
+				});
 				setCallHistory([]);
 			}
 		} catch (err) {

@@ -56,8 +56,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		setAuthStep("sendingCode");
 
 		try {
+			// Ensure phone number has + prefix
+			const formattedPhone = phoneNumber.startsWith("+") ? phoneNumber : `+${phoneNumber}`;
 			const { error } = await supabase.auth.signInWithOtp({
-				phone: phoneNumber,
+				phone: formattedPhone,
 			});
 
 			if (error) {
@@ -84,8 +86,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		setAuthStep("verifyingCode");
 
 		try {
+			// Ensure phone number has + prefix
+			const formattedPhone = phoneNumber.startsWith("+") ? phoneNumber : `+${phoneNumber}`;
 			const { data, error } = await supabase.auth.verifyOtp({
-				phone: phoneNumber,
+				phone: formattedPhone,
 				token: code,
 				type: "sms",
 			});
@@ -101,9 +105,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 			if (data.session) {
 				setSession(data.session);
 				// Fetch user data after successful authentication
-				if (phoneNumber) {
+				if (formattedPhone) {
 					try {
-						await fetchUserData(phoneNumber);
+						await fetchUserData(formattedPhone);
 					} catch {
 						// Don't throw here - it's okay if no data exists yet
 						console.log("No existing user data found - this is normal for new users");
