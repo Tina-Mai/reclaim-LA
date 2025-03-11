@@ -1,7 +1,9 @@
-import { HelpCircle, History, PackageOpen, User } from "lucide-react";
+import { HelpCircle, History, PackageOpen, User, LogOut } from "lucide-react";
 import FullLogo from "@/components/global/LogoFull";
 import PhoneDialog from "@/components/home/PhoneDialog";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 interface SidebarProps {
 	userPhone: string;
@@ -10,6 +12,14 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ userPhone, currentPage, onPageChange }: SidebarProps) => {
+	const { logout } = useAuth();
+	const router = useRouter();
+
+	const handleLogout = async () => {
+		await logout();
+		router.push("/");
+	};
+
 	return (
 		<aside className="w-64 bg-white border-r">
 			<div className="p-4">
@@ -58,10 +68,10 @@ const Sidebar = ({ userPhone, currentPage, onPageChange }: SidebarProps) => {
 			{/* Bottom sidebar items */}
 			<div className="absolute bottom-0 w-64 border-t text-sm">
 				<div className="p-4 space-y-1">
-					{/* <a href="#" className="flex items-center px-3 py-2 text-zinc-600 hover:bg-zinc-100 rounded-lg gap-2">
-						<Settings className="size-4 text-zinc-500" />
-						Settings
-					</a> */}
+					<button onClick={handleLogout} className="flex items-center px-3 py-2 text-zinc-600 hover:bg-zinc-100 rounded-lg gap-2 w-full text-left">
+						<LogOut className="size-4 text-zinc-500" />
+						Log out
+					</button>
 					<Link href="mailto:team@reclaimLA.org" className="flex items-center px-3 py-2 text-zinc-600 hover:bg-zinc-100 rounded-lg gap-2">
 						<HelpCircle className="size-4 text-zinc-500" />
 						Help
