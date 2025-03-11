@@ -10,7 +10,7 @@ import { useUser } from "@/context/UserContext";
 
 function Login() {
 	const { authStep, session, isLoading: isAuthLoading } = useAuth();
-	const { userData, isLoading: isUserDataLoading } = useUser();
+	const { isLoading: isUserDataLoading } = useUser();
 	const router = useRouter();
 
 	useEffect(() => {

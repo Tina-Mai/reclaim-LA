@@ -16,6 +16,13 @@ interface CallHistoryItem {
 	created_at: string;
 }
 
+interface PhoneCsvRecord {
+	id: number;
+	phone: string;
+	csv_content: string;
+	created_at: string;
+}
+
 interface UserContextType {
 	userData: UserData | null;
 	callHistory: CallHistoryItem[];
@@ -53,22 +60,33 @@ export function UserProvider({ children }: { children: ReactNode }) {
 		setError(null);
 
 		try {
-			// Ensure phone number has + prefix
+			// Always add + prefix since that's how it's stored in the database
 			const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
-			console.log("Formatted phone number for query:", formattedPhone);
+			console.log("Querying with formatted phone:", formattedPhone);
 
-			// Get all rows for this phone number, ordered by creation date
-			const { data, error } = await supabase.from("phone_csvs").select("*").eq("phone", formattedPhone).order("created_at", { ascending: false });
+			// Use direct fetch since it's working
+			const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/phone_csvs?phone=eq.${encodeURIComponent(formattedPhone)}&order=created_at.desc`, {
+				headers: {
+					apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
+					Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+				},
+			});
 
-			if (error) {
-				console.error("Error fetching user data:", error);
-				throw error;
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
 			}
+
+			const data = (await response.json()) as PhoneCsvRecord[];
+			console.log("Query response:", {
+				status: response.status,
+				rowCount: data.length,
+				data,
+			});
 
 			if (data && data.length > 0) {
 				// Store call history
 				setCallHistory(
-					data.map((item) => ({
+					data.map((item: PhoneCsvRecord) => ({
 						id: item.id,
 						phone: item.phone,
 						created_at: item.created_at,
@@ -76,7 +94,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 				);
 
 				// Combine CSV content from all rows, keeping the header only from the first row
-				const combinedCsvContent = data.reduce((acc, row, index) => {
+				const combinedCsvContent = data.reduce((acc: string, row: PhoneCsvRecord, index: number) => {
 					if (!row.csv_content) return acc;
 
 					const lines = row.csv_content.split("\n");
@@ -92,7 +110,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 				};
 
 				setUserData(mostRecentData);
-				console.log("UserData state updated successfully");
+				console.log("UserData state updated with combined CSV content");
 			} else {
 				// This is a new user - set minimal user data
 				console.log("No existing data found - new user");
