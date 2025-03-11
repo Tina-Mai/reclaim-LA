@@ -1,3 +1,4 @@
+"use client";
 import { Search, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -19,11 +20,13 @@ interface InventoryProps {
 const Inventory = ({ inventoryItems }: InventoryProps) => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [activeTab, setActiveTab] = useState<"all" | "room">("all");
-	const [selectedRoom, setSelectedRoom] = useState<string>(Array.from(new Set(inventoryItems.map((item) => item.room))).sort()[0] || "");
+	// Get unique rooms for the dropdown, filtering out empty strings
+	const uniqueRooms = Array.from(new Set(inventoryItems.map((item) => item.room)))
+		.filter((room) => room.trim() !== "")
+		.sort();
+	const defaultRoom = uniqueRooms.find((room) => room.toLowerCase().includes("bedroom")) || uniqueRooms[0] || "";
+	const [selectedRoom, setSelectedRoom] = useState<string>(defaultRoom);
 	const totalValue = inventoryItems.reduce((sum, item) => sum + (item.price === -1 ? 0 : item.price), 0);
-
-	// Get unique rooms for the dropdown
-	const uniqueRooms = Array.from(new Set(inventoryItems.map((item) => item.room))).sort();
 
 	// Filter items based on search term and room selection
 	const filteredItems = inventoryItems.filter((item) => {
