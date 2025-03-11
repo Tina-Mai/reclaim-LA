@@ -104,7 +104,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 				if (phoneNumber) {
 					try {
 						await fetchUserData(phoneNumber);
-					} catch (err) {
+					} catch {
 						// Don't throw here - it's okay if no data exists yet
 						console.log("No existing user data found - this is normal for new users");
 					}
