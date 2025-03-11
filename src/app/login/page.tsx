@@ -14,10 +14,10 @@ function Login() {
 	const router = useRouter();
 
 	useEffect(() => {
-		if (session && !isAuthLoading && !isUserDataLoading) {
+		if (session && !isAuthLoading) {
 			router.push("/dashboard");
 		}
-	}, [session, userData, isAuthLoading, isUserDataLoading, router]);
+	}, [session, isAuthLoading, router]);
 
 	if (session && !isAuthLoading && !isUserDataLoading) {
 		return (
