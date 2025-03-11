@@ -1,13 +1,11 @@
-## 🚨 IMPORTANT 🚨
-
-- **Please switch to the 'zueMain' branch to access our new project: Zue Research. You will find a detailed README for that project there.**
+_Please switch to the 'zueMain' branch to access our new project: Zue Research. You will find a detailed README for that project there._
 
 
 # Reclaim LA
 
 We built Reclaim to make the process of remembering and cataloging loss belongings for insurance claims after the LA wildfires faster and simpler with an AI phone agent. More details: [ReclaimLA.org](https://reclaimla.org)
 
-![Reclaim LA - AI insurance claims phone agent](/public/twitter-image.png)
+[![Reclaim LA Demo - AI insurance claims phone agent](https://img.youtube.com/vi/HAVhsWxebUQ/0.jpg)](https://www.youtube.com/watch?v=HAVhsWxebUQ)
 
 ## Getting Started
 
