@@ -1,13 +1,23 @@
 "use client";
 import Link from "next/link";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import PhoneLogin from "@/components/login/PhoneLogin";
 import VerificationInput from "@/components/login/VerificationInput";
 import { useAuth } from "@/context/AuthContext";
 import FullLogo from "@/components/global/LogoFull";
+import { useUser } from "@/context/UserContext";
 
 function Login() {
-	const { authStep } = useAuth();
+	const { authStep, session } = useAuth();
+	const { userData, isLoading: isUserDataLoading } = useUser();
+	const router = useRouter();
+
+	useEffect(() => {
+		if (session && userData && !isUserDataLoading) {
+			router.push("/dashboard");
+		}
+	}, [session, userData, isUserDataLoading, router]);
 
 	const showVerification = authStep === "codeInput" || authStep === "verifyingCode";
 	const showPhoneInput = authStep === "phoneInput" || authStep === "sendingCode";

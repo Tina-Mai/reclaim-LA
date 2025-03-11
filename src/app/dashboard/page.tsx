@@ -20,9 +20,26 @@ type Page = "inventory" | "call-history";
 
 const Dashboard = () => {
 	const { userData, callHistory, isLoading: isUserDataLoading, error: userError } = useUser();
-	const { isLoading: isAuthLoading, error: authError } = useAuth();
+	const { isLoading: isAuthLoading, error: authError, session } = useAuth();
 	const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
 	const [currentPage, setCurrentPage] = useState<Page>("inventory");
+
+	useEffect(() => {
+		console.log("Dashboard: Session Info", {
+			sessionExists: !!session,
+			userPhone: session?.user?.phone,
+			sessionUser: session?.user,
+		});
+		console.log("Dashboard: userData changed", {
+			hasUserData: !!userData,
+			userDataPhone: userData?.phone,
+			hasCsvContent: !!userData?.csv_content,
+			isUserDataLoading,
+			isAuthLoading,
+			userError,
+			authError,
+		});
+	}, [userData, isUserDataLoading, isAuthLoading, userError, authError, session]);
 
 	useEffect(() => {
 		if (userData?.csv_content) {

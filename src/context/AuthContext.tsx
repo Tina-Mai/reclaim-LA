@@ -3,17 +3,12 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useUser } from "./UserContext";
+import { Session } from "@supabase/supabase-js";
 
 type AuthStep = "phoneInput" | "sendingCode" | "codeInput" | "verifyingCode";
 
-interface User {
-	id: string;
-	phone: string;
-	// Add other user fields as needed
-}
-
 interface AuthContextType {
-	user: User | null;
+	session: Session | null;
 	authStep: AuthStep;
 	phoneNumber: string;
 	isLoading: boolean;
@@ -26,52 +21,32 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const DEMO_PHONE = "+18313136619";
-
 export function AuthProvider({ children }: { children: ReactNode }) {
-	const [user, setUser] = useState<User | null>(null);
+	const [session, setSession] = useState<Session | null>(null);
 	const [authStep, setAuthStep] = useState<AuthStep>("phoneInput");
 	const [phoneNumber, setPhoneNumber] = useState("");
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const { fetchUserData, clearUserData } = useUser();
 
-	// Initialize with demo user
+	// Listen for auth state changes
 	useEffect(() => {
-		let mounted = true;
-		console.log("Starting demo user initialization");
-
-		const initializeDemoUser = async () => {
-			try {
-				console.log("Setting up demo user with phone:", DEMO_PHONE);
-				const demoUser: User = {
-					id: "demo-user-id",
-					phone: DEMO_PHONE,
-				};
-
-				if (mounted) {
-					setUser(demoUser);
-					console.log("Fetching data for demo user");
-					await fetchUserData(DEMO_PHONE);
-					console.log("Demo user data fetched successfully");
-				}
-			} catch (err) {
-				console.error("Error initializing demo user:", err);
-				if (mounted) {
-					setError(err instanceof Error ? err.message : "Failed to initialize demo user");
-				}
-			} finally {
-				if (mounted) {
-					console.log("Completing initialization, setting isLoading to false");
-					setIsLoading(false);
+		const {
+			data: { subscription },
+		} = supabase.auth.onAuthStateChange((_event, session) => {
+			setSession(session);
+			if (session?.user) {
+				// If we have a session, fetch the user data
+				const phone = session.user.phone ?? "";
+				if (phone) {
+					fetchUserData(phone);
 				}
 			}
-		};
-
-		initializeDemoUser();
+			setIsLoading(false);
+		});
 
 		return () => {
-			mounted = false;
+			subscription.unsubscribe();
 		};
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -85,10 +60,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 				phone: phoneNumber,
 			});
 
-			if (error) throw error;
+			if (error) {
+				// Check for specific error types
+				if (error.message.includes("20003")) {
+					throw new Error("Phone authentication is not properly configured. Please check your Supabase Twilio settings or enable test mode.");
+				}
+				throw error;
+			}
 			setAuthStep("codeInput");
 		} catch (err) {
-			setError(err instanceof Error ? err.message : "Failed to send code");
+			const errorMessage = err instanceof Error ? err.message : "Failed to send code";
+			console.error("Phone verification error:", errorMessage);
+			setError(errorMessage);
 			setAuthStep("phoneInput");
 		} finally {
 			setIsLoading(false);
@@ -107,19 +90,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 				type: "sms",
 			});
 
-			if (error) throw error;
+			if (error) {
+				if (error.message.includes("Invalid token")) {
+					throw new Error("Invalid verification code. Please try again.");
+				}
+				throw error;
+			}
 
-			const userData = data.user as User;
-			setUser(userData);
-
-			// Fetch user data after successful authentication
-			await fetchUserData(phoneNumber);
-
-			// Reset states
-			setPhoneNumber("");
-			setAuthStep("phoneInput");
+			// If verification is successful, we'll get a session
+			if (data.session) {
+				setSession(data.session);
+				// Fetch user data after successful authentication
+				if (phoneNumber) {
+					try {
+						await fetchUserData(phoneNumber);
+					} catch (err) {
+						// Don't throw here - it's okay if no data exists yet
+						console.log("No existing user data found - this is normal for new users");
+					}
+				}
+				// Reset states
+				setPhoneNumber("");
+				setAuthStep("phoneInput");
+			}
 		} catch (err) {
-			setError(err instanceof Error ? err.message : "Failed to verify code");
+			const errorMessage = err instanceof Error ? err.message : "Failed to verify code";
+			console.error("Code verification error:", errorMessage);
+			setError(errorMessage);
 			setAuthStep("codeInput");
 		} finally {
 			setIsLoading(false);
@@ -127,8 +124,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	};
 
 	const logout = async () => {
-		await supabase.auth.signOut();
-		setUser(null);
+		const { error } = await supabase.auth.signOut();
+		if (error) {
+			setError(error.message);
+			return;
+		}
+		setSession(null);
 		setAuthStep("phoneInput");
 		setPhoneNumber("");
 		setError(null);
@@ -138,7 +139,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	return (
 		<AuthContext.Provider
 			value={{
-				user,
+				session,
 				authStep,
 				phoneNumber,
 				isLoading,

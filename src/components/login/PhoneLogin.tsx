@@ -15,18 +15,39 @@ const PhoneLogin = () => {
 	const isPhoneSuccess = authStep === "sendingCode" || authStep === "codeInput" || authStep === "verifyingCode";
 	const showCodeInput = authStep === "codeInput" || authStep === "verifyingCode";
 
+	const handlePhoneChange = (value: string) => {
+		// Remove any non-digit characters except for the plus sign at the start
+		const formattedPhone = value.replace(/[^\d+]/g, "").replace(/^\+?/, "+");
+		setPhoneNumber(formattedPhone);
+	};
+
 	const handleVerifyCode = () => {
 		if (verificationCode.length === 6) {
 			verifyCode(verificationCode);
 		}
 	};
 
+	const handleKeyPress = (e: React.KeyboardEvent) => {
+		if (e.key === "Enter") {
+			if (showCodeInput) {
+				handleVerifyCode();
+			} else {
+				startPhoneVerification();
+			}
+		}
+	};
+
 	return (
 		<div className="flex flex-col gap-4">
 			<div className="horizontal items-center justify-center gap-2">
-				<PhoneInput defaultCountry="US" placeholder="Phone number" value={phoneNumber} onChange={setPhoneNumber} disabled={isLoading || isPhoneSuccess} />
+				<PhoneInput defaultCountry="US" placeholder="Phone number" value={phoneNumber} onChange={handlePhoneChange} disabled={isLoading || isPhoneSuccess} onKeyPress={handleKeyPress} />
 				<motion.div whileHover="hover" initial="initial">
-					<Button className="hidden sm:flex" onClick={startPhoneVerification} disabled={isLoading || isPhoneSuccess} variant={isPhoneSuccess ? "secondary" : "default"}>
+					<Button
+						className="hidden sm:flex"
+						onClick={startPhoneVerification}
+						disabled={isLoading || isPhoneSuccess || !phoneNumber.startsWith("+")}
+						variant={isPhoneSuccess ? "secondary" : "default"}
+					>
 						{isPhoneSuccess ? (
 							<>
 								<Check className="mr-2 h-4 w-4" />
@@ -58,7 +79,12 @@ const PhoneLogin = () => {
 						)}
 					</Button>
 				</motion.div>
-				<Button className="flex sm:hidden min-w-24" onClick={startPhoneVerification} disabled={isLoading || isPhoneSuccess} variant={isPhoneSuccess ? "secondary" : "default"}>
+				<Button
+					className="flex sm:hidden min-w-24"
+					onClick={startPhoneVerification}
+					disabled={isLoading || isPhoneSuccess || !phoneNumber.startsWith("+")}
+					variant={isPhoneSuccess ? "secondary" : "default"}
+				>
 					{isPhoneSuccess ? (
 						<>
 							<Check className="mr-2 h-4 w-4" />
@@ -74,7 +100,17 @@ const PhoneLogin = () => {
 
 			{showCodeInput && (
 				<div className="horizontal items-center justify-center gap-2">
-					<Input type="text" placeholder="Enter 6-digit code" value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} maxLength={6} className="max-w-[200px]" />
+					<Input
+						type="text"
+						placeholder="Enter 6-digit code"
+						value={verificationCode}
+						onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+						onKeyPress={handleKeyPress}
+						maxLength={6}
+						className="max-w-[200px]"
+						pattern="\d*"
+						inputMode="numeric"
+					/>
 					<Button onClick={handleVerifyCode} disabled={verificationCode.length !== 6 || isLoading}>
 						{isLoading ? "Verifying..." : "Verify"}
 					</Button>

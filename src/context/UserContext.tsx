@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 
 interface UserData {
@@ -33,18 +33,40 @@ export function UserProvider({ children }: { children: ReactNode }) {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
+	// Check for existing session on mount
+	useEffect(() => {
+		const checkSession = async () => {
+			const {
+				data: { session },
+			} = await supabase.auth.getSession();
+			if (session?.user?.phone) {
+				fetchUserData(session.user.phone);
+			}
+		};
+		checkSession();
+	}, []);
+
 	const fetchUserData = async (phone: string) => {
 		console.log("\n--- UserContext: fetchUserData Start ---");
 		console.log("Input phone number:", phone);
 		setIsLoading(true);
-		// Don't clear userData here to prevent flashing of empty state
 		setError(null);
 
 		try {
+			// Ensure phone number has + prefix
+			const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
+			console.log("Formatted phone number for query:", formattedPhone);
+
 			// First try to get all matching rows to see what's available
-			const { data: allMatches, error: searchError } = await supabase.from("phone_csvs").select("*").ilike("phone", `%${phone}%`);
+			const { data: allMatches, error: searchError } = await supabase.from("phone_csvs").select("*").ilike("phone", `%${formattedPhone}%`);
 
 			console.log("All matching rows:", allMatches);
+			console.log("Search error if any:", searchError);
+			console.log("Current phone search:", {
+				searchPattern: `%${formattedPhone}%`,
+				hasMatches: !!allMatches?.length,
+				matchCount: allMatches?.length || 0,
+			});
 
 			if (searchError) {
 				console.error("Search error:", searchError);
@@ -52,7 +74,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 			}
 
 			// Get all rows for this phone number, ordered by creation date
-			const { data, error } = await supabase.from("phone_csvs").select("*").eq("phone", phone).order("created_at", { ascending: false });
+			const { data, error } = await supabase.from("phone_csvs").select("*").eq("phone", formattedPhone).order("created_at", { ascending: false });
 
 			console.log("Query response:", {
 				data,
@@ -60,6 +82,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 				errorMessage: error?.message,
 				errorCode: error?.code,
 				details: error?.details,
+				formattedPhone,
 			});
 
 			if (error) {
@@ -105,7 +128,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
 					csv_length: mostRecentData.csv_content?.length,
 					created_at: mostRecentData.created_at,
 					first_line: mostRecentData.csv_content?.split("\n")[0],
-					raw_data: mostRecentData,
 				});
 
 				if (!mostRecentData.csv_content) {
@@ -117,15 +139,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
 				console.log("UserData state updated successfully");
 			} else {
 				console.log("No data found");
-				throw new Error("No data found for phone number");
+				setUserData(null);
+				setCallHistory([]);
 			}
 		} catch (err) {
 			console.error("Error in fetchUserData:", err);
 			setError(err instanceof Error ? err.message : "Failed to fetch user data");
-			// Only set userData to null if we're not already loading
-			if (!isLoading) {
-				setUserData(null);
-			}
+			setUserData(null);
+			setCallHistory([]);
 		} finally {
 			setIsLoading(false);
 			console.log("--- UserContext: fetchUserData End ---\n");
