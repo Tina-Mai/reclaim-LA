@@ -350,6 +350,45 @@ async function updateCSV(taggingResults, csvContent, imageLinks) {
   }
 }
 
+async function updateSupabaseCSV(supabaseClient, csvId, updatedItems) {
+  console.log("Updating Supabase CSV record with ID:", csvId);
+  
+  try {
+    // Convert the updated items back to CSV format
+    const headers = Object.keys(updatedItems[0]);
+    const csvRows = [headers.join(',')];
+    
+    // Add each item as a row in the CSV
+    updatedItems.forEach(item => {
+      const row = headers.map(header => {
+        // Handle values that might contain commas by quoting them
+        const value = item[header] || '';
+        return value.includes(',') ? `"${value}"` : value;
+      }).join(',');
+      csvRows.push(row);
+    });
+    
+    // Join all rows with newlines to create the final CSV content
+    const newCsvContent = csvRows.join('\n');
+    
+    // Update the record in the database
+    const { data, error } = await supabaseClient
+      .from('phone_csvs')
+      .update({ csv_content: newCsvContent })
+      .eq('id', csvId);
+      
+    if (error) {
+      console.error("Error updating CSV in database:", error);
+      return { success: false, error: error.message };
+    }
+    
+    return { success: true, id: csvId };
+  } catch (error) {
+    console.error("Error in updateSupabaseCSV:", error);
+    return { success: false, error: error.message };
+  }
+}
+
 Deno.serve(async (req) => {
   try {
     // Get the phone number from the request
@@ -392,9 +431,19 @@ Deno.serve(async (req) => {
     
     // Update the CSV with the tagging results and image links
     const updated_csv = await updateCSV(tagging_results, csv_content, image_links)
+    
+    // Add this new code to update the database with the modified CSV
+    let supabase_update_result = null;
+    if (updated_csv.success && updated_csv.updated_items) {
+      supabase_update_result = await updateSupabaseCSV(
+        supabaseClient, 
+        updated_csv.id, 
+        updated_csv.updated_items
+      );
+    }
 
     return new Response(
-      JSON.stringify({ tagging_results, updated_csv }),
+      JSON.stringify({ tagging_results, updated_csv, supabase_update_result }),
       { headers: { "Content-Type": "application/json" } }
     )
   } catch (error) {
