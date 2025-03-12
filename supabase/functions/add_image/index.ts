@@ -128,7 +128,7 @@ async function tagItems(imageLink, csvContent) {
             "content": [
               {
                 "type": "text",
-                "text": "You are an insurance claims assistant that analyzes images. Your task is to determine if a specific item described by the user is visible in the provided image. Respond with a clear yes or no assessment."
+                "text": "You are an insurance claims assistant that analyzes images. Your task is to determine if a specific item described by the user is visible in the provided image. Don't worry about quantities in the description. Respond with a clear yes or no assessment."
               }
             ]
           },
@@ -294,6 +294,62 @@ async function resizeImage(imageBuffer, maxDimension = 800) {
   }
 }
 
+async function updateCSV(taggingResults, csvContent, imageLinks) {
+  console.log("Updating CSV with tagging results");
+  
+  // Ensure we have valid inputs
+  if (!taggingResults || !csvContent || !csvContent.csv_content || !imageLinks) {
+    console.error("Missing required data for CSV update");
+    return { success: false, error: "Missing required data" };
+  }
+  
+  try {
+    // Get the CSV content as an array
+    const items = Array.isArray(csvContent.csv_content) ? csvContent.csv_content : [];
+    
+    if (items.length === 0) {
+      return { success: false, error: "No items found in CSV" };
+    }
+    
+    // Create a new array to store the updated items
+    const updatedItems = [...items];
+    
+    // Process each tagging result and add new columns for each image
+    imageLinks.forEach((imageLink, imageIndex) => {
+      const columnName = `Image ${imageIndex + 1}`;
+      const tagResult = taggingResults[imageIndex];
+      
+      // Skip if the result doesn't have the expected format
+      if (!tagResult || !tagResult.results || !Array.isArray(tagResult.results)) {
+        console.warn(`Skipping invalid tagging result for ${columnName}:`, tagResult);
+        return;
+      }
+      
+      // Add the image link to each item based on the corresponding result
+      tagResult.results.forEach((isPresent, itemIndex) => {
+        if (itemIndex < updatedItems.length) {
+          // If the boolean is true, add the image link to the new column
+          // If false, leave it empty
+          updatedItems[itemIndex][columnName] = isPresent ? imageLink : '';
+        }
+      });
+    });
+    
+    // Return the updated items and the original CSV ID
+    return {
+      success: true,
+      id: csvContent.id,
+      updated_items: updatedItems
+    };
+  } catch (error) {
+    console.error("Error updating CSV:", error);
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+}
+
 Deno.serve(async (req) => {
   try {
     // Get the phone number from the request
@@ -319,15 +375,26 @@ Deno.serve(async (req) => {
     // Use the getItemNames function to get the most recent csv_content
     const csv_content = await getItemNames(supabaseClient, phone_num)
     
-    // Process each image link with the CSV content
+    // TEMPORARY: Use hardcoded tagging results instead of calling tagItems
+    const tagging_results = [
+      {"results":[false,false,false,false,false,false,false,false,false,false,false,false,false,false]},
+      {"results":[false,false,false,false,false,false,true,true,false,false,true,true,true,false]}
+    ];
+    
+    // Comment out the original code that calls tagItems
+    /*
     const tagging_results = []
     for (const imageLink of image_links) {
       const result = await tagItems(imageLink, csv_content?.csv_content)
       tagging_results.push(result)
     }
+    */
+    
+    // Update the CSV with the tagging results and image links
+    const updated_csv = await updateCSV(tagging_results, csv_content, image_links)
 
     return new Response(
-      JSON.stringify({ image_links, csv_content, tagging_results }),
+      JSON.stringify({ tagging_results, updated_csv }),
       { headers: { "Content-Type": "application/json" } }
     )
   } catch (error) {
