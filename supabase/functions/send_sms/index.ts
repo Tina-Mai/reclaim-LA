@@ -5,35 +5,74 @@
 //deploy command: supabase functions deploy send_sms --project-ref 
 
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
-import { TwilioSms } from "./helpers/helper";
+import { TwilioSms } from "./helpers/helper.ts";
+
+// Logger function to standardize log format
+const log = (message: string, data?: any) => {
+  console.log(JSON.stringify({
+    timestamp: new Date().toISOString(),
+    message,
+    data: data || null,
+  }));
+};
 
 const accountSid = Deno.env.get("TWILIO_PROD_SID") || "";
 const authToken = Deno.env.get("TWILIO_PROD_AUTH_TOKEN") || "";
 const fromMobile = "+18449434713";
 
-
 Deno.serve(async (req) => {
-      const { textMessage, toMobile, mediaUrl } = await req.json();
+  try {
+    const { textMessage, toMobile, mediaUrl } = await req.json();
+    log("Received SMS request", { toMobile, mediaUrl: mediaUrl || 'not provided' });
 
+    if (!accountSid || !authToken) {
+      log("Missing Twilio credentials");
+      throw new Error("Missing Twilio credentials");
+    }
 
-      const twilioClient = new TwilioSms(accountSid, authToken);
-      const message = await twilioClient.sendSms({
-        Body: textMessage,
-        From: fromMobile,
-        To: toMobile,
-        MediaUrl: [mediaUrl],
+    const twilioClient = new TwilioSms(accountSid, authToken);
+    log("Initiating Twilio SMS send");
+
+    const message = await twilioClient.sendSms({
+      Body: textMessage,
+      From: fromMobile,
+      To: toMobile,
+      ...(mediaUrl ? { MediaUrl: [mediaUrl] } : {}),
+    });
+
+    log("Received Twilio response", message);
+
+    const data = {
+      isSuccess: false,
+    };
+
+    if (message.status === "queued") {
+      data.isSuccess = true;
+      log("SMS successfully queued", { messageId: message.sid });
+    } else {
+      log("SMS not queued", { 
+        status: message.status, 
+        errorCode: message.error_code,
+        errorMessage: message.error_message 
       });
-      const data = {
-        isSuccess: false,
-      };
+    }
 
-      if (message.status === "queued") {
-        data.isSuccess = true;
+    return new Response(JSON.stringify(data), {
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    log("Error in SMS function", { error: errorMessage });
+    return new Response(
+      JSON.stringify({ 
+        isSuccess: false, 
+        error: errorMessage 
+      }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
       }
-
-  return new Response(JSON.stringify(data), {
-    headers: { "Content-Type": "application/json" },
-  });
+    );
+  }
 });
 
 

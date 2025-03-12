@@ -28,15 +28,50 @@ Deno.serve(async (req) => {
   // Extract SMS details from the form data
   const messageBody = formData.get('Body')
   const from = formData.get('From')
+  const numMedia = formData.get('NumMedia')
+  const messageSid = formData.get('MessageSid')
 
   console.log("Message Body: ", messageBody);
   console.log("From: ", from);
+  console.log("Number of Media Items: ", numMedia);
 
   // Remove the '+' prefix from the phone number
   const phoneNumber = from
 
   console.log("Raw from value:", from);
   console.log("Final phoneNumber being queried:", phoneNumber);
+
+  // Check if there are any media items in the request
+  if (numMedia && parseInt(numMedia.toString()) > 0) {
+    console.log("Media items detected in the request");
+    
+    // Log each media URL
+    for (let i = 0; i < parseInt(numMedia.toString()); i++) {
+      const mediaUrl = formData.get(`MediaUrl${i}`);
+      const contentType = formData.get(`MediaContentType${i}`);
+      
+      console.log(`Media ${i} URL: ${mediaUrl}`);
+      console.log(`Media ${i} Content Type: ${contentType}`);
+
+      // Insert the media URL into the item_images table
+      if (mediaUrl) {
+        const { data: insertData, error: insertError } = await supabase
+          .from('item_images')
+          .insert({
+            url: mediaUrl.toString(),
+            phone_num: from?.toString()
+          });
+        
+        if (insertError) {
+          console.error(`Error inserting media URL ${i} into item_images:`, insertError);
+        } else {
+          console.log(`Successfully inserted media URL ${i} into item_images`);
+        }
+      }
+    }
+  }
+
+
 
   // Query Supabase for the most recent CSV content from the phone_csvs table
   const { data, error } = await supabase
@@ -96,6 +131,7 @@ Deno.serve(async (req) => {
     }
   })
 })
+
 
 /* To invoke locally:
 
