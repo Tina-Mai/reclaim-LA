@@ -99,3 +99,35 @@ Reclaim LA is a platform designed to help Los Angeles residents who lost their h
 - Managed GitHub issues and pull requests, overseeing the project's repository to ensure smooth implementation of changes to prompts and pathways.
 - Continued testing and bug fixes
 - Media and outreach for the project
+
+
+## Team & Responsibilities (Sprint 4) - Tagging Images to catalog, portal to log in
+
+### Zane
+- Updated SMS process to accept and store images with Twilio
+  - Enhanced the existing SMS functionality to handle image attachments via MMS
+  - Implemented secure storage for user-submitted images of lost items
+  - Modified database schema to associate uploaded images with specific inventory items
+  - Integrated with the Twilio API to process incoming media messages
+
+### Matthew
+- Added edge function to tag images to items in the CSV
+  - Created a sophisticated edge function that processes uploaded images and associates them with items in the user's inventory
+  - Implemented GPT-4o vision capabilities to analyze images and identify items
+  - Added image optimization with resizing functionality to handle large images efficiently
+  - Built a matching system to connect uploaded photos with specific inventory items
+- Created deck for final pitch
+  - Developed comprehensive presentation highlighting the project's mission, technical architecture, user journey, and impact metrics
+
+### Tina
+- Added portal on website where people can access their inventory
+  - Developed a secure dashboard interface with authentication
+  - Created inventory display component to visualize cataloged items
+  - Implemented call history tracking to show past interactions
+  - Added CSV export functionality for insurance submission
+  - Integrated user context management for secure data handling
+- Created demo video for final presentation
+  - Produced comprehensive demonstration showcasing the complete user journey
+  - Highlighted the AI phone agent in action and inventory cataloging process
+  - Demonstrated how users can access their inventory through the portal
+  - Explained how the system helps wildfire victims with insurance claims

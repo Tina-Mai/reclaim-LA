@@ -44,9 +44,11 @@ Deno.serve(async (req) => {
   // Check if there are any media items in the request
   if (numMedia && parseInt(numMedia.toString()) > 0) {
     console.log("Media items detected in the request");
+    console.log(`Total media items: ${numMedia}`);
     
     // Log each media URL
     for (let i = 0; i < parseInt(numMedia.toString()); i++) {
+      console.log(`Processing media item ${i+1} of ${numMedia}`);
       const mediaUrl = formData.get(`MediaUrl${i}`);
       const contentType = formData.get(`MediaContentType${i}`);
       
@@ -66,9 +68,38 @@ Deno.serve(async (req) => {
           console.error(`Error inserting media URL ${i} into item_images:`, insertError);
         } else {
           console.log(`Successfully inserted media URL ${i} into item_images`);
+          console.log(`Insert response data:`, insertData);
         }
+      } else {
+        console.log(`No media URL found for media item ${i}, skipping insertion`);
       }
+      console.log(`Finished processing media item ${i+1} of ${numMedia}`);
     }
+    
+    console.log("Completed processing all media items");
+    
+    // Call the add_image function with the phone number after processing all media items
+    console.log(`Calling add_image function after processing all media items`);
+    
+    try {
+      const addImageResponse = await fetch('https://wlbgwlnszsnuhfmjgsxj.supabase.co/functions/v1/add_image', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsYmd3bG5zenNudWhmbWpnc3hqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY4MDU0MDUsImV4cCI6MjA1MjM4MTQwNX0.NZT3FcuHlQYQiGiac-JNj0FJHIXPaRvGeJ7lYIIbKc0',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: 'Functions',
+          phone_num: from?.toString()
+        })
+      });
+      
+      const addImageData = await addImageResponse.json();
+    } catch (error) {
+      console.error(`Error calling add_image function:`, error);
+    }
+  } else {
+    console.log("No media items in the request");
   }
 
 
