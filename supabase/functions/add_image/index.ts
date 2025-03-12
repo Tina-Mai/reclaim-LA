@@ -415,19 +415,17 @@ Deno.serve(async (req) => {
     const csv_content = await getItemNames(supabaseClient, phone_num)
     
     // TEMPORARY: Use hardcoded tagging results instead of calling tagItems
-    const tagging_results = [
-      {"results":[false,false,false,false,false,false,false,false,false,false,false,false,false,false]},
-      {"results":[false,false,false,false,false,false,true,true,false,false,true,true,true,false]}
-    ];
+    // const tagging_results = [
+    //   {"results":[false,false,false,false,false,false,false,false,false,false,false,false,false,false]},
+    //   {"results":[false,false,false,false,false,false,true,true,false,false,true,true,true,false]}
+    // ];
     
     // Comment out the original code that calls tagItems
-    /*
     const tagging_results = []
     for (const imageLink of image_links) {
       const result = await tagItems(imageLink, csv_content?.csv_content)
       tagging_results.push(result)
     }
-    */
     
     // Update the CSV with the tagging results and image links
     const updated_csv = await updateCSV(tagging_results, csv_content, image_links)
@@ -443,7 +441,13 @@ Deno.serve(async (req) => {
     }
 
     return new Response(
-      JSON.stringify({ tagging_results, updated_csv, supabase_update_result }),
+      JSON.stringify({ 
+        image_links, 
+        csv_content, 
+        tagging_results, 
+        updated_csv, 
+        supabase_update_result 
+      }),
       { headers: { "Content-Type": "application/json" } }
     )
   } catch (error) {
