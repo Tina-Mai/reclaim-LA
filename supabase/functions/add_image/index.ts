@@ -307,6 +307,8 @@ async function updateCSV(taggingResults, csvContent, imageLinks) {
     // Get the CSV content as an array
     const items = Array.isArray(csvContent.csv_content) ? csvContent.csv_content : [];
     
+    console.log("Items:", items);
+
     if (items.length === 0) {
       return { success: false, error: "No items found in CSV" };
     }
@@ -391,8 +393,8 @@ async function updateSupabaseCSV(supabaseClient, csvId, updatedItems) {
 
 Deno.serve(async (req) => {
   try {
-    // Get the phone number from the request
-    const { phone_num } = await req.json()
+    // Get the phone number and email from the request
+    const { phone_num, email } = await req.json()
     
     // Check if phone_num is provided
     if (!phone_num) {
@@ -438,6 +440,24 @@ Deno.serve(async (req) => {
         updated_csv.id, 
         updated_csv.updated_items
       );
+      
+      // Call the send_email function if email is provided
+      if (email) {
+        console.log("Sending email to:", email);
+        const emailResponse = await fetch('/functions/v1/send_email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`
+          },
+          body: JSON.stringify({
+            email: email,
+            csvContent: updated_csv.updated_items
+          })
+        });
+        const emailResult = await emailResponse.json();
+        supabase_update_result = { ...supabase_update_result, emailResult };
+      }
     }
 
     return new Response(
