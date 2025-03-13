@@ -41,6 +41,8 @@ Deno.serve(async (req) => {
   console.log("Raw from value:", from);
   console.log("Final phoneNumber being queried:", phoneNumber);
 
+  var twimlResponse = ``;
+
   // Check if there are any media items in the request
   if (numMedia && parseInt(numMedia.toString()) > 0) {
     console.log("Media items detected in the request");
@@ -80,7 +82,19 @@ Deno.serve(async (req) => {
     
     // Call the add_image function with the phone number after processing all media items
     console.log(`Calling add_image function after processing all media items`);
-    
+
+    twimlResponse = `<?xml version="1.0" encoding="UTF-8"?>
+    <Response>
+      <Message>We're processing your photo(s). If you send more, we'll add them to your claim. Otherwise, reply with the best email for us to send it to</Message>
+    </Response>`
+
+
+  } else {
+
+
+    // if no media items, call add_image function
+    console.log("No media items in the request");
+    // Create TwiML response
     try {
       const addImageResponse = await fetch('https://wlbgwlnszsnuhfmjgsxj.supabase.co/functions/v1/add_image', {
         method: 'POST',
@@ -90,70 +104,25 @@ Deno.serve(async (req) => {
         },
         body: JSON.stringify({
           name: 'Functions',
-          phone_num: from?.toString()
+          phone_num: from?.toString(),
+          email: messageBody
         })
       });
       
       const addImageData = await addImageResponse.json();
+      console.log('addImageData', addImageData);
     } catch (error) {
       console.error(`Error calling add_image function:`, error);
     }
-  } else {
-    console.log("No media items in the request");
+
+
+    // Create TwiML response
+    twimlResponse = `<?xml version="1.0" encoding="UTF-8"?>
+      <Response>
+        <Message>Thanks! We just sent an email with your doc to: ${messageBody}\n\nIt might take a few minutes to arrive, and don't forget to check your spam if you don't see it.\n\nThanks for using Reclaim!\n- Zane, Matthew, and Tina</Message>
+      </Response>`
+
   }
-
-
-
-  // Query Supabase for the most recent CSV content from the phone_csvs table
-  const { data, error } = await supabase
-    .from<PhoneCsv>('phone_csvs')
-    .select('csv_content')
-    .eq('phone', phoneNumber)
-    .order('created_at', { ascending: false })
-    .limit(1)
-
-  console.log("Database query response - data:", data);
-  console.log("Database query response - error:", error);
-
-  if (error) {
-    console.error("Error querying Supabase:", error);
-    return new Response("Error querying Supabase", { status: 500 });
-  }
-
-  if (!data || data.length === 0) {
-    console.error("No CSV data found for phone number:", phoneNumber);
-    return new Response("No CSV data found", { status: 404 });
-  }
-
-  const [latestEntry] = data;
-  if (!latestEntry?.csv_content) {
-    console.error("CSV content is undefined for latest entry");
-    return new Response("CSV content is missing", { status: 500 });
-  }
-
-  const csvContent = latestEntry.csv_content;
-  console.log("CSV Content: ", csvContent);
-  
-  // Create TwiML response
-  const twimlResponse = `<?xml version="1.0" encoding="UTF-8"?>
-    <Response>
-      <Message>Thanks! We just sent an email with your doc to: ${messageBody}\n\nIt might take a few minutes to arrive, and don't forget to check your spam if you don't see it.\n\nThanks for using Reclaim!\n- Zane, Matthew, and Tina</Message>
-    </Response>`
-
-  // Send email with CSV
-  const emailResponse = await fetch('https://wlbgwlnszsnuhfmjgsxj.supabase.co/functions/v1/send_email', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      email: messageBody,
-      csvContent: csvContent
-    })
-  });
-
-  const emailData = await emailResponse.json();
-  console.log('Email sent:', emailData);
 
   // Return TwiML response
   return new Response(twimlResponse, { 
