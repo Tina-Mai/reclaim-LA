@@ -9,7 +9,9 @@ const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
 
 const handler = async (request: Request): Promise<Response> => {
     // Parse request body or use defaults
+    console.log("Starting send_email function");
     const { email, csvContent } = await request.json().catch(() => ({}));
+    console.log("CSV Content:", csvContent);
     
     const finalEmail = email || 'mwirtz@stanford.edu';
     const finalCsvContent = csvContent || "name,age,city\nJohn,30,New York\nJane,25,Los Angeles";

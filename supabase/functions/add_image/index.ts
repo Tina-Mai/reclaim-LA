@@ -445,7 +445,21 @@ Deno.serve(async (req) => {
       // Call the send_email function if email is provided
       if (email) {
         console.log("Sending email to:", email);
-        const emailResponse = await fetch('/functions/v1/send_email', {
+        
+        // Get the most recent CSV content from Supabase
+        const { data: csvData, error: csvError } = await supabaseClient
+          .from('phone_csvs')
+          .select('csv_content')
+          .eq('phone', phone_num)
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        if (csvError) {
+          throw new Error(`Error fetching CSV: ${csvError.message}`);
+        }
+        console.log("CSV Content being sent:", csvData[0].csv_content);
+
+        const emailResponse = await fetch('https://wlbgwlnszsnuhfmjgsxj.supabase.co/functions/v1/send_email', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -453,7 +467,7 @@ Deno.serve(async (req) => {
           },
           body: JSON.stringify({
             email: email,
-            csvContent: updated_csv.updated_items
+            csvContent: csvData[0].csv_content
           })
         });
         const emailResult = await emailResponse.json();
