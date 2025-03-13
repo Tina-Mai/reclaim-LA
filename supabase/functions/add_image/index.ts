@@ -412,6 +412,7 @@ Deno.serve(async (req) => {
 
     // Use the getImageLinks function to get image URLs
     const image_links = await getImageLinks(supabaseClient, phone_num)
+    console.log("Image Links:", image_links);
 
     // Use the getItemNames function to get the most recent csv_content
     const csv_content = await getItemNames(supabaseClient, phone_num)

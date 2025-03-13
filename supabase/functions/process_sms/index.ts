@@ -122,6 +122,9 @@ Deno.serve(async (req) => {
         <Message>Thanks! We just sent an email with your doc to: ${messageBody}\n\nIt might take a few minutes to arrive, and don't forget to check your spam if you don't see it.\n\nThanks for using Reclaim!\n- Zane, Matthew, and Tina</Message>
       </Response>`
 
+    console.log("TwiML response:", twimlResponse);
+    console.log("Should send thank you message")
+
   }
 
   // Return TwiML response
